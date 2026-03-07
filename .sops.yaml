@@ -1,0 +1,7 @@
+keys:
+  - &machine_sops age154jsw6pnyamka6g3wnhemtghuq20zmk6hql97p9xytjyzcyr449qq372h5
+
+creation_rules:
+  - path_regex: secrets/.*\.ya?ml$
+    age:
+      - *machine_sops
