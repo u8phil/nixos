@@ -10,6 +10,7 @@
     ./modules/alacritty.nix
     ./modules/spice-vdagent.nix
     ./floorp.nix
+    ./rofi.nix
     ./plasma
   ];
 

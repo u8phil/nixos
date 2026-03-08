@@ -1,4 +1,8 @@
-{ ... }:
+{
+  config,
+  lib,
+  ...
+}:
 let
   floorpKeyboardShortcutConfig = builtins.toJSON {
     enabled = true;
@@ -89,29 +93,9 @@ in
     };
   };
 
-  xdg.desktopEntries.floorp = {
-    name = "Firefox";
-    genericName = "Web Browser";
-    exec = "floorp %U";
-    icon = "floorp";
-    terminal = false;
-    categories = [
-      "Network"
-      "WebBrowser"
-    ];
-    settings = {
-      StartupWMClass = "floorp";
-      Keywords = "firefox;browser;web;";
-    };
-    actions = {
-      "new-window" = {
-        name = "New Window";
-        exec = "floorp --new-window %U";
-      };
-      "new-private-window" = {
-        name = "New Private Window";
-        exec = "floorp --private-window %U";
-      };
-    };
-  };
+  home.file.".local/share/applications/floorp.desktop".text = lib.mkForce (
+    builtins.replaceStrings [ "Name=Floorp" ] [ "Name=Firefox" ] (
+      builtins.readFile "${config.programs.floorp.package.desktopItem}/share/applications/floorp.desktop"
+    )
+  );
 }

@@ -34,15 +34,11 @@
         immutable = true;
       };
 
-      kwinrc.ElectricBorders = {
-        Top = "None";
-        TopRight = "None";
-        Right = "None";
-        BottomRight = "None";
-        Bottom = "None";
-        BottomLeft = "None";
-        Left = "None";
-        TopLeft = "None";
+      kwinrc."Effect-overview" = {
+        BorderActivate = {
+          value = "";
+          immutable = true;
+        };
       };
     };
   };

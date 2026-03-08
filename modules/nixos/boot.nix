@@ -3,9 +3,15 @@
 {
   boot.loader.grub = {
     enable = true;
-    device = "/dev/vda";
+    efiSupport = true;
+    device = "nodev";
     useOSProber = true;
   };
 
+  boot.loader.systemd-boot.enable = false;
+  boot.loader.efi = {
+    canTouchEfiVariables = true;
+    efiSysMountPoint = "/boot/efi";
+  };
   boot.kernelPackages = pkgs.linuxPackages_latest;
 }
