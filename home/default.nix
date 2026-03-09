@@ -20,6 +20,7 @@
     telegram-desktop
     alacritty
     nixfmt
+    tokei
     hysteria
     (pkgs.writeShellScriptBin "opencode" ''
       set -euo pipefail

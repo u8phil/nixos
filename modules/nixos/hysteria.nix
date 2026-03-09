@@ -117,8 +117,7 @@ in
   systemd.services = with config.sops.templates; {
     hysteria-http = {
       description = "Hysteria HTTP";
-      after = [ "network-online.target" ];
-      wants = [ "network-online.target" ];
+      after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
 
       serviceConfig = {
@@ -130,10 +129,7 @@ in
 
     hysteria = {
       description = "Hysteria";
-      after = [
-        "network-online.target"
-      ];
-      wants = [ "network-online.target" ];
+      after = [ "network.target" ];
 
       serviceConfig = {
         ExecStart = "${pkgs.hysteria}/bin/hysteria -c ${hysteria.path} client";
@@ -144,10 +140,7 @@ in
 
     hysteria-socks = {
       description = "Hysteria SOCKS5";
-      after = [
-        "network-online.target"
-      ];
-      wants = [ "network-online.target" ];
+      after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
 
       serviceConfig = {
@@ -160,13 +153,9 @@ in
     opencode-socks-http = {
       description = "OpenCode SOCKS to HTTP bridge";
       after = [
-        "network-online.target"
         "hysteria-socks.service"
       ];
-      wants = [
-        "network-online.target"
-        "hysteria-socks.service"
-      ];
+      wants = [ "hysteria-socks.service" ];
       wantedBy = [ "multi-user.target" ];
 
       serviceConfig = {

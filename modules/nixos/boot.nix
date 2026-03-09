@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   boot.loader.grub = {
@@ -13,5 +13,12 @@
     canTouchEfiVariables = true;
     efiSysMountPoint = "/boot/efi";
   };
+
+  fileSystems."/boot/efi".options = lib.mkAfter [
+    "nofail"
+    "x-systemd.automount"
+    "x-systemd.idle-timeout=1min"
+  ];
+
   boot.kernelPackages = pkgs.linuxPackages_latest;
 }

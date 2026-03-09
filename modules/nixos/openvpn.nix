@@ -97,11 +97,7 @@
   systemd.services.openvpn3-import-work = {
     description = "Import OpenVPN3 profile: work";
     wantedBy = [ "multi-user.target" ];
-    after = [
-      "network-online.target"
-      "sops-nix.service"
-    ];
-    wants = [ "network-online.target" ];
+    after = [ "sops-nix.service" ];
 
     serviceConfig = {
       Type = "oneshot";
