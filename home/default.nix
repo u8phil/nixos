@@ -12,7 +12,6 @@
     ./floorp.nix
     ./keepassxc.nix
     ./ssh.nix
-    ./rofi.nix
     ./zed.nix
     ./plasma
   ];

@@ -16,6 +16,5 @@
     konsole
     kate
     elisa
-    krunner
   ];
 }
