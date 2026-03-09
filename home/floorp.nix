@@ -17,10 +17,6 @@ let
       slug = "sponsorblock";
     }
     {
-      id = "{7a7a4a92-a2a0-41d1-9fd7-1e92480d612d}";
-      slug = "styl-us";
-    }
-    {
       id = "moz-addon-prod@7tv.app";
       slug = "7tv-extension";
     }
@@ -47,7 +43,6 @@ let
       "widget-overflow-fixed-list" = [ ];
       "unified-extensions-area" = [
         "sponsorblocker_ajay_app-browser-action"
-        "_7a7a4a92-a2a0-41d1-9fd7-1e92480d612d_-browser-action"
         "moz-addon-prod_7tv_app-browser-action"
       ];
       "nav-bar" = [
@@ -89,7 +84,6 @@ let
       "_c4b582ec-4343-438c-bda2-2f691c16c262_-browser-action"
       "addon_darkreader_org-browser-action"
       "sponsorblocker_ajay_app-browser-action"
-      "_7a7a4a92-a2a0-41d1-9fd7-1e92480d612d_-browser-action"
       "moz-addon-prod_7tv_app-browser-action"
       "screenshot-button"
     ];
@@ -110,6 +104,64 @@ let
     uiCustomization.special.hideForwardBackwardButton = true;
     uiCustomization.qrCode.disableButton = true;
   };
+
+  youtubeCss = ''
+    .style-scope.ytd-rich-grid-renderer {
+        --ytd-rich-grid-items-per-row: 5;
+    }
+
+    ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
+        margin-left: calc(var(--ytd-rich-grid-item-margin)/2);
+    }
+
+    .yt-lockup-metadata-view-model--standard.yt-lockup-metadata-view-model--rich-grid-legacy-typography .yt-lockup-metadata-view-model__title {
+        font-size: 1.4rem;
+    }
+
+    #header.ytd-rich-grid-renderer {
+        display: none;
+    }
+
+    #frosted-glass.with-chipbar.ytd-app {
+        height: 56px;
+    }
+
+    #voice-search-button.ytd-masthead {
+        display: none;
+    }
+
+    #country-code {
+        font-size: 0;
+    }
+
+    #country-code::before {
+        content: 'ZALUPA';
+        font-size: 10px;
+    }
+
+    a[title="Shorts"] {
+        display: none;
+    }
+
+    ytd-guide-section-renderer:nth-child(3),
+    ytd-guide-section-renderer:nth-child(4) {
+        display: none;
+    }
+
+    ytd-rich-section-renderer {
+        display: none;
+    }
+
+    /* STUPID FUCKING "Includes paid promotion" button on video preview, DIE */
+    a[href="https://support.google.com/youtube?p=ppp&nohelpkit=1"] {
+        display: none !important;
+    }
+
+    /* AI video summary */
+    #expandable-metadata > ytd-expandable-metadata-renderer[has-video-summary=""] {
+        display: none;
+    }
+  '';
 in
 {
   programs.floorp = {
@@ -180,6 +232,13 @@ in
               };
             };
         };
+
+        userContent = ''
+          @-moz-document domain("youtube.com") {
+          ${youtubeCss}
+          }
+        '';
+
         userChrome = ''
           #nav-bar-overflow-button,
           #back-button,

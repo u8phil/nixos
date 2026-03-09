@@ -16,7 +16,7 @@
   ];
 
   home.packages = with pkgs; [
-    nil
+    nixd
     telegram-desktop
     alacritty
     nixfmt

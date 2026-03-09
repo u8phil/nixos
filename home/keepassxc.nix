@@ -12,8 +12,6 @@
         BackupBeforeSave = true;
         ConfigVersion = 2;
         DropToBackgroundOnCopy = true;
-        GlobalAutoTypeKey = 76;
-        GlobalAutoTypeModifiers = 100663296;
         HideWindowOnCopy = true;
         MinimizeAfterUnlock = true;
         MinimizeOnCopy = false;
@@ -54,5 +52,9 @@
         LockDatabaseIdleSeconds = 600;
       };
     };
+  };
+
+  programs.plasma.shortcuts."services/org.keepassxc.KeePassXC.desktop" = {
+    _launch = [ "Meta+K" ];
   };
 }

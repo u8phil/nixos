@@ -1,5 +1,4 @@
 { ... }:
-
 {
   imports = [
     ./shortcuts.nix
@@ -15,6 +14,7 @@
       colorScheme = "BreezeDark";
     };
 
+    session.general.askForConfirmationOnLogout = false;
     session.sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession";
 
     kwin = {
