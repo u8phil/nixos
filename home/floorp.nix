@@ -233,11 +233,7 @@ in
             };
         };
 
-        userContent = ''
-          @-moz-document domain("youtube.com") {
-          ${youtubeCss}
-          }
-        '';
+        userContent = "@-moz-document domain(\"youtube.com\") { ${youtubeCss} }";
 
         userChrome = ''
           #nav-bar-overflow-button,
@@ -333,9 +329,7 @@ in
       };
 
       ExtensionSettings = {
-        "*" = {
-          installation_mode = "allowed";
-        };
+        "*".installation_mode = "allowed";
       }
       // builtins.listToAttrs (map mkLatestAmoExtension floorpExtensions);
     };

@@ -1,5 +1,4 @@
-{ config, lib, ... }:
-
+{ config, ... }:
 {
   sops = {
     defaultSopsFile = ../../secrets/work-vpn.yaml;

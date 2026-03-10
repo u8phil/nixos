@@ -19,10 +19,12 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixos-grub-themes.url = "github:jeslie0/nixos-grub-themes";
   };
 
   outputs =
-    {
+    inputs @ {
       nixpkgs,
       home-manager,
       plasma-manager,
@@ -44,6 +46,7 @@
 
       nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
         inherit system;
+        specialArgs = { inherit inputs; };
         modules = [
           ./hosts/nixos
           sops-nix.nixosModules.sops

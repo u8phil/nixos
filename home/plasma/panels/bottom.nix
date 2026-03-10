@@ -33,6 +33,7 @@
         {
           iconTasks = {
             launchers = [
+              "applications:org.telegram.desktop.desktop"
               "applications:org.kde.dolphin.desktop"
               "applications:floorp.desktop"
             ];

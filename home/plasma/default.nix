@@ -25,10 +25,7 @@
     };
 
     krunner.position = "center";
-    kwin.virtualDesktops = {
-      number = 4;
-      animation = "fade";
-    };
+    kwin.virtualDesktops.number = 4;
 
     configFile = {
       kscreenlockerrc.Daemon = {

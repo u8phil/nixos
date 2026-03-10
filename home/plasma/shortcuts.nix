@@ -38,5 +38,5 @@
     };
   };
 
-  programs.plasma.spectacle.shortcuts.captureRectangularRegion = "Meta+/";
+  programs.plasma.spectacle.shortcuts.captureRectangularRegion = "Num+/";
 }

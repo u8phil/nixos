@@ -1,6 +1,4 @@
 {
-  config,
-  lib,
   pkgs,
   ...
 }:
@@ -13,6 +11,8 @@
     ./ssh.nix
     ./zed.nix
     ./plasma
+    ./rclone.nix
+    ./discord.nix
   ];
 
   home.packages = with pkgs; [
@@ -33,30 +33,12 @@
     '')
   ];
 
-  programs.rclone = {
+  xdg.autostart = {
     enable = true;
-
-    remotes.onedrive = {
-      config.type = "onedrive";
-
-      mounts."" = {
-        enable = true;
-        mountPoint = "${config.home.homeDirectory}/OneDrive";
-
-        options = {
-          config = "${config.xdg.configHome}/rclone/rclone.conf";
-          "dir-cache-time" = "96h";
-          "drive-chunk-size" = "32M";
-          timeout = "1h";
-          "vfs-cache-mode" = "full";
-          "vfs-cache-max-age" = "999999h";
-          "vfs-cache-max-size" = "1G";
-        };
-      };
-    };
+    entries = [
+      "${pkgs.telegram-desktop}/share/applications/org.telegram.desktop.desktop"
+    ];
   };
-
-  systemd.user.services.rclone-config.Service.ExecStart = lib.mkForce "${pkgs.coreutils}/bin/true";
 
   home.stateVersion = "25.11";
 }
