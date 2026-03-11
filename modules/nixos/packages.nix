@@ -9,9 +9,6 @@
     nerd-fonts.fira-code
   ];
 
-  security.sudo.enable = false;
-  security.sudo-rs.enable = true;
-
   environment.systemPackages = with pkgs; [
     fish
     wget

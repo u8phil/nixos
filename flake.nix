@@ -20,15 +20,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+
     nixos-grub-themes.url = "github:jeslie0/nixos-grub-themes";
   };
 
   outputs =
-    inputs @ {
+    inputs@{
       nixpkgs,
       home-manager,
       plasma-manager,
       sops-nix,
+      nix-cachyos-kernel,
       ...
     }:
     let
@@ -52,6 +55,7 @@
           sops-nix.nixosModules.sops
           home-manager.nixosModules.home-manager
           {
+            nixpkgs.overlays = [ nix-cachyos-kernel.overlays.pinned ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "bak";

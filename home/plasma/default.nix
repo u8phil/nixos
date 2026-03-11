@@ -48,6 +48,28 @@
         };
       };
     };
+
+    startup.desktopScript.fix_krunner_meta = {
+      priority = 1;
+      runAlways = true;
+      text = ''
+        const launcherTypes = [
+          "org.kde.plasma.kickoff",
+          "org.kde.plasma.kicker",
+          "org.kde.plasma.kickerdash"
+        ];
+        const globalShortcuts = new ConfigFile("kglobalshortcutsrc", "plasmashell");
+
+        panels().forEach((panel) => {
+          panel.widgets().forEach((widget) => {
+            if (launcherTypes.includes(widget.type)) {
+              widget.globalShortcut = "";
+              globalShortcuts.writeEntry("activate widget " + panel.id, "none,,");
+            }
+          });
+        });
+      '';
+    };
   };
 
   systemd.user.services.krunner-daemon = {

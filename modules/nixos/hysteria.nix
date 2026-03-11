@@ -60,19 +60,6 @@ in
     };
   };
 
-  sops.templates.hysteria-http = {
-    name = "hysteria-http.yaml";
-    owner = "root";
-    group = "root";
-    mode = "0400";
-
-    content = mkConfig {
-      http = {
-        listen = "127.0.0.1:18080";
-      };
-    };
-  };
-
   sops.templates.hysteria = {
     name = "hysteria.yaml";
     owner = "root";
@@ -115,18 +102,6 @@ in
   };
 
   systemd.services = with config.sops.templates; {
-    hysteria-http = {
-      description = "Hysteria HTTP";
-      after = [ "network.target" ];
-      wantedBy = [ "multi-user.target" ];
-
-      serviceConfig = {
-        ExecStart = "${pkgs.hysteria}/bin/hysteria -c ${hysteria-http.path} client";
-        Restart = "on-failure";
-        RestartSec = 2;
-      };
-    };
-
     hysteria = {
       description = "Hysteria";
       after = [ "network.target" ];

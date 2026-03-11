@@ -17,5 +17,7 @@
     kate
     elisa
     discover
+    baloo
+    baloo-widgets
   ];
 }
