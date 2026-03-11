@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   imports = [
@@ -21,6 +21,13 @@
   systemd.oomd = {
     enableRootSlice = true;
     enableUserSlices = true;
+  };
+
+  security.wrappers.sniffnet = {
+    owner = "root";
+    group = "root";
+    capabilities = "cap_net_raw,cap_net_admin=eip";
+    source = "${pkgs.sniffnet}/bin/sniffnet";
   };
 
   # No perl messing with my /etc

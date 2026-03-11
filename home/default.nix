@@ -22,6 +22,7 @@
     nixfmt
     tokei
     hysteria
+    sniffnet
   ];
 
   xdg.autostart = {
