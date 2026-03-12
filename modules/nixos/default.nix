@@ -5,6 +5,7 @@
     ./boot.nix
     ./networking.nix
     ./bluetooth.nix
+    ./power.nix
     ./locale.nix
     ./desktop.nix
     ./printing.nix

@@ -20,6 +20,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    mcp-nixos = {
+      url = "github:utensils/mcp-nixos";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    opencode = {
+      url = "github:anomalyco/opencode";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
 
     nixos-grub-themes.url = "github:jeslie0/nixos-grub-themes";
@@ -29,6 +39,8 @@
     inputs@{
       nixpkgs,
       home-manager,
+      mcp-nixos,
+      opencode,
       plasma-manager,
       sops-nix,
       nix-cachyos-kernel,
@@ -55,7 +67,11 @@
           sops-nix.nixosModules.sops
           home-manager.nixosModules.home-manager
           {
-            nixpkgs.overlays = [ nix-cachyos-kernel.overlays.pinned ];
+            nixpkgs.overlays = [
+              nix-cachyos-kernel.overlays.pinned
+              mcp-nixos.overlays.default
+              opencode.overlays.default
+            ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "bak";

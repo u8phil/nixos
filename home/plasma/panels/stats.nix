@@ -4,7 +4,7 @@
     {
       location = "right";
       extraSettings = ''
-        panel.height = 300;
+        panel.height = 350;
         panel.alignment = "center";
         panel.hiding = "dodgewindows";
         panel.lengthMode = "fit";
@@ -19,111 +19,107 @@
         panelView.writeEntry("panelVisibility", 2);
         panelView.writeEntry("panelLengthMode", 1);
         panelView.writeEntry("floating", 0);
-        panelDefaults.writeEntry("thickness", 300);
+        panelDefaults.writeEntry("thickness", 350);
         panelDefaults.writeEntry("offset", 0);
       '';
 
       widgets = [
         {
-          systemMonitor = {
-            title = "Memory Usage";
-            showTitle = false;
+          name = "org.kde.plasma.systemmonitor.memory";
+          config = {
+            CurrentPreset = "org.kde.plasma.systemmonitor";
+            PreloadWeight = 55;
+            popupHeight = 234;
+            popupWidth = 238;
             showLegend = true;
-            displayStyle = "org.kde.ksysguard.linechart";
-            sensors = [
-              {
-                name = "cpu/all/usage";
-                color = "85,170,255";
-                label = "CPU";
-              }
-              {
-                name = "memory/physical/usedPercent";
-                color = "233,120,61";
-                label = "RAM";
-              }
-            ];
-            settings = {
-              SensorColors."memory/physical/used" = "61,174,233";
-              SensorLabels."memory/physical/used" = "Used";
-              SensorLabels."memory/physical/total" = "Total";
-              Sensors = {
-                highPrioritySensorIds = ''["cpu/all/usage","memory/physical/usedPercent"]'';
-                lowPrioritySensorIds = ''["memory/physical/used","memory/physical/total"]'';
-                totalSensors = ''["memory/physical/usedPercent"]'';
-              };
+            Appearance = {
+              chartFace = "org.kde.ksysguard.linechart";
+              showTitle = false;
+              title = "Memory Usage";
+            };
+            "org.kde.ksysguard.linechart/General".showLegend = true;
+            SensorColors = {
+              "cpu/all/usage" = "85,170,255";
+              "memory/physical/used" = "61,174,233";
+              "memory/physical/usedPercent" = "233,120,61";
+            };
+            SensorLabels = {
+              "cpu/all/usage" = "CPU";
+              "memory/physical/total" = "Total";
+              "memory/physical/used" = "Used";
+              "memory/physical/usedPercent" = "RAM";
+            };
+            Sensors = {
+              highPrioritySensorIds = ''["cpu/all/usage","memory/physical/usedPercent"]'';
+              lowPrioritySensorIds = ''["memory/physical/used","memory/physical/total"]'';
+              totalSensors = ''["memory/physical/usedPercent"]'';
             };
           };
         }
         {
-          systemMonitor = {
-            showTitle = false;
+          name = "org.kde.plasma.systemmonitor.net";
+          config = {
+            CurrentPreset = "org.kde.plasma.systemmonitor";
             showLegend = true;
-            displayStyle = "org.kde.ksysguard.linechart";
-            sensors = [
-              {
-                name = "network/all/download";
-                color = "61,174,233";
-                label = "Download";
-              }
-              {
-                name = "network/all/upload";
-                color = "233,120,61";
-                label = "Upload";
-              }
-            ];
-            settings = {
-              SensorColors."os/system/hostname" = "233,140,61";
-              Sensors.highPrioritySensorIds = ''["network/all/download","network/all/upload"]'';
+            Appearance = {
+              chartFace = "org.kde.ksysguard.linechart";
+              showTitle = false;
+              title = "";
             };
+            "org.kde.ksysguard.linechart/General".showLegend = true;
+            SensorColors = {
+              "network/all/download" = "61,174,233";
+              "network/all/upload" = "233,120,61";
+            };
+            Sensors.highPrioritySensorIds = ''["network/all/download","network/all/upload"]'';
           };
         }
         {
-          systemMonitor = {
-            showTitle = false;
+          name = "org.kde.plasma.systemmonitor.diskactivity";
+          config = {
+            CurrentPreset = "org.kde.plasma.systemmonitor";
             showLegend = true;
-            displayStyle = "org.kde.linebars";
-            sensors = [
-              {
-                name = "cpu/all/averageTemperature";
-                color = "61,174,233";
-                label = "Temp";
-              }
-              {
-                name = "os/system/uptime";
-                color = "233,120,61";
-                label = "Uptime";
-              }
-            ];
-            settings = {
-              SensorColors."network/all/download" = "61,174,233";
-              SensorColors."network/all/upload" = "233,120,61";
-              Sensors = {
-                highPrioritySensorIds = ''["cpu/all/averageTemperature","os/system/uptime"]'';
-                lowPrioritySensorIds = "[]";
-                totalSensors = ''["cpu/all/averageTemperature"]'';
-              };
-              "org.kde.linebars/General".rangeAuto = false;
+            Appearance = {
+              chartFace = "org.kde.ksysguard.linechart";
+              showTitle = false;
+              title = "";
             };
+            "org.kde.ksysguard.linechart/General".showLegend = true;
+            SensorColors = {
+              "disk/all/read" = "233,120,61";
+              "disk/all/write" = "61,174,233";
+            };
+            Sensors.highPrioritySensorIds = ''["disk/all/write","disk/all/read"]'';
           };
         }
         {
-          systemMonitor = {
-            showTitle = false;
+          name = "org.kde.plasma.systemmonitor.net";
+          config = {
+            CurrentPreset = "org.kde.plasma.systemmonitor";
             showLegend = true;
-            displayStyle = "org.kde.ksysguard.linechart";
-            sensors = [
-              {
-                name = "disk/all/write";
-                color = "61,174,233";
-                label = "Write";
-              }
-              {
-                name = "disk/all/read";
-                color = "233,120,61";
-                label = "Read";
-              }
-            ];
-            settings.Sensors.highPrioritySensorIds = ''["disk/all/write","disk/all/read"]'';
+            Appearance = {
+              chartFace = "org.kde.ksysguard.textonly";
+              showTitle = false;
+              title = "";
+            };
+            SensorColors = {
+              "cpu/all/averageTemperature" = "61,174,233";
+              "network/all/download" = "61,174,233";
+              "network/all/upload" = "233,120,61";
+              "os/system/uptime" = "233,120,61";
+            };
+            SensorLabels = {
+              "cpu/all/averageTemperature" = "Temp";
+              "os/system/uptime" = "Uptime";
+            };
+            Sensors = {
+              highPrioritySensorIds = ''["cpu/all/averageTemperature","os/system/uptime"]'';
+              lowPrioritySensorIds = "[]";
+              totalSensors = ''["cpu/all/averageTemperature"]'';
+            };
+            "org.kde.ksysguard.horizontalbars/General" = {
+              rangeAuto = false;
+            };
           };
         }
       ];

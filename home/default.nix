@@ -17,12 +17,14 @@
 
   home.packages = with pkgs; [
     nixd
+    mcp-nixos
     telegram-desktop
     alacritty
     nixfmt
     tokei
     hysteria
     sniffnet
+    wl-clipboard
   ];
 
   xdg.autostart = {
