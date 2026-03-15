@@ -44,13 +44,24 @@
         "org.kde.plasma.marginsseparator"
         {
           systemTray.items = {
+            extra = [
+              "org.kde.plasma.battery"
+              "org.kde.plasma.bluetooth"
+              "org.kde.plasma.networkmanagement"
+              "org.kde.plasma.volume"
+              "org.kde.plasma.brightness"
+              "org.kde.plasma.clipboard"
+            ];
             shown = [
               "org.kde.plasma.battery"
               "org.kde.plasma.bluetooth"
               "org.kde.plasma.networkmanagement"
               "org.kde.plasma.volume"
             ];
-            hidden = [ "org.kde.plasma.clipboard" ];
+            hidden = [
+              "org.kde.plasma.brightness"
+              "org.kde.plasma.clipboard"
+            ];
           };
         }
         {

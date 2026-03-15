@@ -8,6 +8,7 @@
     };
 
     kwin = {
+      Overview = "none";
       "Switch to Desktop 1" = "Alt+1";
       "Switch to Desktop 2" = "Alt+2";
       "Switch to Desktop 3" = "Alt+3";
@@ -27,6 +28,7 @@
 
     "services/org.kde.krunner.desktop" = {
       _launch = [
+        "Meta"
         "Meta+Q"
       ];
       RunClipboard = "none";

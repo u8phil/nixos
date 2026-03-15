@@ -219,6 +219,16 @@ in
                   key = "R";
                   action = "gecko-reload";
                 };
+                "alt-a-back-page" = {
+                  modifiers = alt;
+                  key = "A";
+                  action = "gecko-back";
+                };
+                "alt-s-forward-page" = {
+                  modifiers = alt;
+                  key = "S";
+                  action = "gecko-forward";
+                };
                 "alt-e-new-tab" = {
                   modifiers = alt;
                   key = "E";

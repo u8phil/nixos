@@ -14,6 +14,22 @@
       mode = "0400";
     };
 
+    secrets.github-mcp = {
+      owner = "phil";
+      group = "users";
+      mode = "0400";
+    };
+
+    templates.github-mcp-environment = {
+      owner = "phil";
+      group = "users";
+      mode = "0400";
+      path = "/home/phil/.config/environment.d/10-github-mcp.conf";
+      content = ''
+        GITHUB_PERSONAL_ACCESS_TOKEN=${config.sops.placeholder.github-mcp}
+      '';
+    };
+
     templates.ssh-host-config = {
       owner = "phil";
       group = "users";

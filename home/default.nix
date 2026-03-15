@@ -1,14 +1,10 @@
-{
-  pkgs,
-  ...
-}:
+{ pkgs, ... }:
 {
   imports = [
     ./alacritty.nix
     ./floorp.nix
     ./keepassxc.nix
     ./ssh.nix
-    ./zed.nix
     ./plasma
     ./rclone.nix
     ./discord.nix
@@ -18,12 +14,14 @@
   home.packages = with pkgs; [
     nixd
     mcp-nixos
+    github-mcp-server
     telegram-desktop
     alacritty
     nixfmt
     tokei
     hysteria
     sniffnet
+    baobab
     wl-clipboard
   ];
 

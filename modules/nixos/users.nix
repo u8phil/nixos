@@ -1,10 +1,12 @@
-{ ... }:
+{ pkgs, ... }:
 {
   users.mutableUsers = false;
 
   users.users.phil = {
     isNormalUser = true;
     description = "phil";
+    ignoreShellProgramCheck = true;
+    shell = pkgs.fish;
     extraGroups = [
       "networkmanager"
       "wheel"

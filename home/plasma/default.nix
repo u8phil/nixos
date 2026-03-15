@@ -9,11 +9,21 @@
 
   programs.plasma = {
     enable = true;
+    overrideConfig = true;
 
     workspace = {
       lookAndFeel = "org.kde.breezedark.desktop";
       colorScheme = "BreezeDark";
     };
+
+    input.touchpads = [
+      {
+        name = "PNP0C50:0b 0911:5288 Touchpad";
+        vendorId = "0911";
+        productId = "5288";
+        naturalScroll = true;
+      }
+    ];
 
     session.general.askForConfirmationOnLogout = false;
     session.sessionRestore.restoreOpenApplicationsOnLogin = "startWithEmptySession";
@@ -34,6 +44,11 @@
         TerminalService = "Alacritty.desktop";
       };
 
+      baloofilerc."Basic Settings"."Indexing-Enabled" = {
+        value = false;
+        immutable = true;
+      };
+
       kscreenlockerrc.Daemon = {
         Autolock = true;
         Timeout = 15;
@@ -44,7 +59,7 @@
         TabBox.DelayTime = 0;
         TabBox.LayoutName = "big_icons";
         TabBoxAlternative.LayoutName = "big_icons";
-        ModifierOnlyShortcuts.Meta = "org.kde.krunner,/App,,toggleDisplay";
+        ModifierOnlyShortcuts.Meta = "org.kde.kglobalaccel,/component/org_kde_krunner_desktop,org.kde.kglobalaccel.Component,invokeShortcut,_launch";
 
         "Effect-overview" = {
           BorderActivate = {

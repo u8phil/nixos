@@ -11,6 +11,10 @@
 
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+  };
 
   environment.plasma6.excludePackages = with pkgs.kdePackages; [
     konsole
