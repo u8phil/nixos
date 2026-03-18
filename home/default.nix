@@ -2,6 +2,7 @@
 {
   imports = [
     ./alacritty.nix
+    ./freecad.nix
     ./floorp.nix
     ./keepassxc.nix
     ./ssh.nix
