@@ -4,6 +4,7 @@
   nixpkgs.config.allowUnfree = true;
 
   documentation.man.cache.enable = false;
+  documentation.enable = false;
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"

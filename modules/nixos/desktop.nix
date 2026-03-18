@@ -20,6 +20,7 @@
     konsole
     kate
     elisa
+    pkgs.xterm
     discover
     baloo
     baloo-widgets

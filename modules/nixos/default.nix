@@ -4,6 +4,7 @@
   imports = [
     ./boot.nix
     ./networking.nix
+    ./journald.nix
     ./bluetooth.nix
     ./power.nix
     ./locale.nix

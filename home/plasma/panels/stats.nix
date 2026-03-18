@@ -1,11 +1,26 @@
 { ... }:
 
+let
+  desktopWidth = 1920;
+  rightMargin = 16;
+  topOffset = 16;
+  widgetWidth = 350;
+  chartHeight = 200;
+  textHeight = 45;
+  t = toString;
+  widgetX = desktopWidth - widgetWidth - rightMargin;
+  itemGeometries = builtins.concatStringsSep "" [
+    "Applet-1527:${t widgetX},${t topOffset},${t widgetWidth},${t chartHeight},0;"
+    "Applet-1528:${t widgetX},${t (topOffset + chartHeight)},${t widgetWidth},${t chartHeight},0;"
+    "Applet-1529:${t widgetX},${t (topOffset + chartHeight * 2)},${t widgetWidth},${t chartHeight},0;"
+    "Applet-1530:${t widgetX},${t (topOffset + chartHeight * 3)},${t widgetWidth},${t textHeight},0;"
+  ];
+in
 {
   programs.plasma.configFile."plasma-org.kde.plasma.desktop-appletsrc" = {
     "Containments/1504" = {
-      "ItemGeometries-1920x1080" =
-        "Applet-1527:1554,32,350,190,0;Applet-1528:1554,222,350,160,0;Applet-1529:1554,382,350,160,0;Applet-1530:1554,542,350,96,0;";
-      ItemGeometriesHorizontal = "Applet-1527:1554,32,350,190,0;Applet-1528:1554,222,350,160,0;Applet-1529:1554,382,350,160,0;Applet-1530:1554,542,350,96,0;";
+      "ItemGeometries-1920x1080" = itemGeometries;
+      ItemGeometriesHorizontal = itemGeometries;
       activityId = "972f23fb-1cfd-45ac-9c1a-911762fde2a0";
       formfactor = 0;
       immutability = 1;
