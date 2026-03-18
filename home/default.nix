@@ -9,28 +9,34 @@
     ./rclone.nix
     ./discord.nix
     ./opencode.nix
+    ./vscodium.nix
+    ./helix.nix
   ];
+
+  programs.direnv = {
+    enable = true;
+    enableFishIntegration = true;
+  };
 
   home.packages = with pkgs; [
     nixd
+    devenv
+    steam
     mcp-nixos
     github-mcp-server
     telegram-desktop
     alacritty
     nixfmt
     tokei
+    pinta
+    gparted
     hysteria
     sniffnet
     baobab
     wl-clipboard
   ];
 
-  xdg.autostart = {
-    enable = true;
-    entries = [
-      "${pkgs.telegram-desktop}/share/applications/org.telegram.desktop.desktop"
-    ];
-  };
+  xdg.autostart.enable = true;
 
   # button control from bluetooth headphones
   services.mpris-proxy.enable = true;

@@ -14,6 +14,7 @@
     wget
     btop
     git
+    ripgrep
     sops
     openvpn3
     file

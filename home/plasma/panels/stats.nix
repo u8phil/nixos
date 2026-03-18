@@ -1,128 +1,158 @@
 { ... }:
+
 {
-  programs.plasma.panels = [
-    {
-      location = "right";
-      extraSettings = ''
-        panel.height = 350;
-        panel.alignment = "center";
-        panel.hiding = "dodgewindows";
-        panel.lengthMode = "fit";
-        panel.offset = 0;
-        panel.floating = false;
+  programs.plasma.configFile."plasma-org.kde.plasma.desktop-appletsrc" = {
+    "Containments/1504" = {
+      "ItemGeometries-1920x1080" =
+        "Applet-1527:1554,32,350,190,0;Applet-1528:1554,222,350,160,0;Applet-1529:1554,382,350,160,0;Applet-1530:1554,542,350,96,0;";
+      ItemGeometriesHorizontal = "Applet-1527:1554,32,350,190,0;Applet-1528:1554,222,350,160,0;Applet-1529:1554,382,350,160,0;Applet-1530:1554,542,350,96,0;";
+      activityId = "972f23fb-1cfd-45ac-9c1a-911762fde2a0";
+      formfactor = 0;
+      immutability = 1;
+      lastScreen = 0;
+      location = 0;
+      plugin = "org.kde.plasma.folder";
+      wallpaperplugin = "org.kde.image";
+    };
 
-        const panelViews = new ConfigFile("plasmashellrc", "PlasmaViews");
-        const panelView = new ConfigFile(panelViews, "Panel " + panel.id);
-        const panelDefaults = new ConfigFile(panelView, "Defaults");
+    "Containments/1504/Applets/1527" = {
+      immutability = 1;
+      plugin = "org.kde.plasma.systemmonitor";
+    };
 
-        panelView.writeEntry("alignment", 132);
-        panelView.writeEntry("panelVisibility", 2);
-        panelView.writeEntry("panelLengthMode", 1);
-        panelView.writeEntry("floating", 0);
-        panelDefaults.writeEntry("thickness", 350);
-        panelDefaults.writeEntry("offset", 0);
-      '';
+    "Containments/1504/Applets/1527/Configuration" = {
+      CurrentPreset = "org.kde.plasma.systemmonitor";
+      PreloadWeight = 55;
+      popupHeight = 234;
+      popupWidth = 238;
+      showLegend = true;
+    };
 
-      widgets = [
-        {
-          name = "org.kde.plasma.systemmonitor.memory";
-          config = {
-            CurrentPreset = "org.kde.plasma.systemmonitor";
-            PreloadWeight = 55;
-            popupHeight = 234;
-            popupWidth = 238;
-            showLegend = true;
-            Appearance = {
-              chartFace = "org.kde.ksysguard.linechart";
-              showTitle = false;
-              title = "Memory Usage";
-            };
-            "org.kde.ksysguard.linechart/General".showLegend = true;
-            SensorColors = {
-              "cpu/all/usage" = "85,170,255";
-              "memory/physical/used" = "61,174,233";
-              "memory/physical/usedPercent" = "233,120,61";
-            };
-            SensorLabels = {
-              "cpu/all/usage" = "CPU";
-              "memory/physical/total" = "Total";
-              "memory/physical/used" = "Used";
-              "memory/physical/usedPercent" = "RAM";
-            };
-            Sensors = {
-              highPrioritySensorIds = ''["cpu/all/usage","memory/physical/usedPercent"]'';
-              lowPrioritySensorIds = ''["memory/physical/used","memory/physical/total"]'';
-              totalSensors = ''["memory/physical/usedPercent"]'';
-            };
-          };
-        }
-        {
-          name = "org.kde.plasma.systemmonitor.net";
-          config = {
-            CurrentPreset = "org.kde.plasma.systemmonitor";
-            showLegend = true;
-            Appearance = {
-              chartFace = "org.kde.ksysguard.linechart";
-              showTitle = false;
-              title = "";
-            };
-            "org.kde.ksysguard.linechart/General".showLegend = true;
-            SensorColors = {
-              "network/all/download" = "61,174,233";
-              "network/all/upload" = "233,120,61";
-            };
-            Sensors.highPrioritySensorIds = ''["network/all/download","network/all/upload"]'';
-          };
-        }
-        {
-          name = "org.kde.plasma.systemmonitor.diskactivity";
-          config = {
-            CurrentPreset = "org.kde.plasma.systemmonitor";
-            showLegend = true;
-            Appearance = {
-              chartFace = "org.kde.ksysguard.linechart";
-              showTitle = false;
-              title = "";
-            };
-            "org.kde.ksysguard.linechart/General".showLegend = true;
-            SensorColors = {
-              "disk/all/read" = "233,120,61";
-              "disk/all/write" = "61,174,233";
-            };
-            Sensors.highPrioritySensorIds = ''["disk/all/write","disk/all/read"]'';
-          };
-        }
-        {
-          name = "org.kde.plasma.systemmonitor.net";
-          config = {
-            CurrentPreset = "org.kde.plasma.systemmonitor";
-            showLegend = true;
-            Appearance = {
-              chartFace = "org.kde.ksysguard.textonly";
-              showTitle = false;
-              title = "";
-            };
-            SensorColors = {
-              "cpu/all/averageTemperature" = "61,174,233";
-              "network/all/download" = "61,174,233";
-              "network/all/upload" = "233,120,61";
-              "os/system/uptime" = "233,120,61";
-            };
-            SensorLabels = {
-              "cpu/all/averageTemperature" = "Temp";
-              "os/system/uptime" = "Uptime";
-            };
-            Sensors = {
-              highPrioritySensorIds = ''["cpu/all/averageTemperature","os/system/uptime"]'';
-              lowPrioritySensorIds = "[]";
-              totalSensors = ''["cpu/all/averageTemperature"]'';
-            };
-            "org.kde.ksysguard.horizontalbars/General" = {
-              rangeAuto = false;
-            };
-          };
-        }
-      ];
-    }
-  ];
+    "Containments/1504/Applets/1527/Configuration/Appearance" = {
+      chartFace = "org.kde.ksysguard.linechart";
+      showTitle = false;
+      title = "Memory Usage";
+    };
+
+    "Containments/1504/Applets/1527/Configuration/SensorColors" = {
+      "cpu/all/usage" = "85,170,255";
+      "memory/physical/used" = "61,174,233";
+      "memory/physical/usedPercent" = "233,120,61";
+    };
+
+    "Containments/1504/Applets/1527/Configuration/SensorLabels" = {
+      "cpu/all/usage" = "CPU";
+      "memory/physical/total" = "Total";
+      "memory/physical/used" = "Used";
+      "memory/physical/usedPercent" = "RAM";
+    };
+
+    "Containments/1504/Applets/1527/Configuration/Sensors" = {
+      highPrioritySensorIds = ''["cpu/all/usage","memory/physical/usedPercent"]'';
+      lowPrioritySensorIds = ''["memory/physical/used","memory/physical/total"]'';
+      totalSensors = ''["memory/physical/usedPercent"]'';
+    };
+
+    "Containments/1504/Applets/1527/Configuration/org.kde.ksysguard.linechart/General".showLegend =
+      true;
+
+    "Containments/1504/Applets/1528" = {
+      immutability = 1;
+      plugin = "org.kde.plasma.systemmonitor";
+    };
+
+    "Containments/1504/Applets/1528/Configuration" = {
+      CurrentPreset = "org.kde.plasma.systemmonitor";
+      showLegend = true;
+    };
+
+    "Containments/1504/Applets/1528/Configuration/Appearance" = {
+      chartFace = "org.kde.ksysguard.linechart";
+      showTitle = false;
+      title = "";
+    };
+
+    "Containments/1504/Applets/1528/Configuration/SensorColors" = {
+      "network/all/download" = "61,174,233";
+      "network/all/upload" = "233,120,61";
+    };
+
+    "Containments/1504/Applets/1528/Configuration/SensorLabels" = {
+      "network/all/download" = "Download";
+      "network/all/upload" = "Upload";
+    };
+
+    "Containments/1504/Applets/1528/Configuration/Sensors".highPrioritySensorIds =
+      ''["network/all/download","network/all/upload"]'';
+
+    "Containments/1504/Applets/1528/Configuration/org.kde.ksysguard.linechart/General".showLegend =
+      true;
+
+    "Containments/1504/Applets/1529" = {
+      immutability = 1;
+      plugin = "org.kde.plasma.systemmonitor";
+    };
+
+    "Containments/1504/Applets/1529/Configuration" = {
+      CurrentPreset = "org.kde.plasma.systemmonitor";
+      showLegend = true;
+    };
+
+    "Containments/1504/Applets/1529/Configuration/Appearance" = {
+      chartFace = "org.kde.ksysguard.linechart";
+      showTitle = false;
+      title = "";
+    };
+
+    "Containments/1504/Applets/1529/Configuration/SensorColors" = {
+      "disk/all/read" = "233,120,61";
+      "disk/all/write" = "61,174,233";
+    };
+
+    "Containments/1504/Applets/1529/Configuration/SensorLabels" = {
+      "disk/all/read" = "Read";
+      "disk/all/write" = "Write";
+    };
+
+    "Containments/1504/Applets/1529/Configuration/Sensors".highPrioritySensorIds =
+      ''["disk/all/write","disk/all/read"]'';
+
+    "Containments/1504/Applets/1529/Configuration/org.kde.ksysguard.linechart/General".showLegend =
+      true;
+
+    "Containments/1504/Applets/1530" = {
+      immutability = 1;
+      plugin = "org.kde.plasma.systemmonitor";
+    };
+
+    "Containments/1504/Applets/1530/Configuration" = {
+      CurrentPreset = "org.kde.plasma.systemmonitor";
+      showLegend = true;
+    };
+
+    "Containments/1504/Applets/1530/Configuration/Appearance" = {
+      chartFace = "org.kde.ksysguard.textonly";
+      showTitle = false;
+      title = "";
+    };
+
+    "Containments/1504/Applets/1530/Configuration/SensorColors" = {
+      "cpu/all/averageTemperature" = "61,174,233";
+      "os/system/uptime" = "233,120,61";
+    };
+
+    "Containments/1504/Applets/1530/Configuration/SensorLabels" = {
+      "cpu/all/averageTemperature" = "Temp";
+      "os/system/uptime" = "Uptime";
+    };
+
+    "Containments/1504/Applets/1530/Configuration/Sensors" = {
+      highPrioritySensorIds = ''["cpu/all/averageTemperature","os/system/uptime"]'';
+      lowPrioritySensorIds = "[]";
+      totalSensors = ''["cpu/all/averageTemperature"]'';
+    };
+
+    "Containments/1504/Applets/1530/Configuration/org.kde.ksysguard.textonly/General".groupByTotal =
+      false;
+  };
 }

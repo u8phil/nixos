@@ -3,6 +3,12 @@
   ...
 }:
 let
+  twitchAdSolutionsVaftPermalink = "https://raw.githubusercontent.com/pixeltris/TwitchAdSolutions/f8f86706daf90daa534b26bce5b2f01238667d5f/vaft/vaft-ublock-origin.js";
+  firefoxClassicLogo = pkgs.fetchurl {
+    url = "https://upload.wikimedia.org/wikipedia/commons/8/84/Mozilla_Firefox_3.5_logo.png";
+    hash = "sha256-9EOE521nTOFzTkpGf912J9IH4WNUoBqLqdybTwnMzRc=";
+  };
+
   floorpExtensions = [
     {
       id = "keepassxc-browser@keepassxc.org";
@@ -25,8 +31,8 @@ let
       slug = "darkreader";
     }
     {
-      id = "{c4b582ec-4343-438c-bda2-2f691c16c262}";
-      slug = "600-sound-volume";
+      id = "{8454caa8-cebc-4486-8b23-9771f187ed6c}";
+      slug = "600-sound-volume-privacy";
     }
   ];
 
@@ -52,7 +58,7 @@ let
         "urlbar-container"
         "unified-extensions-button"
         "adnauseam_rednoise_org-browser-action"
-        "_c4b582ec-4343-438c-bda2-2f691c16c262_-browser-action"
+        "_8454caa8-cebc-4486-8b23-9771f187ed6c_-browser-action"
         "addon_darkreader_org-browser-action"
         "keepassxc-browser_keepassxc_org-browser-action"
         "downloads-button"
@@ -81,7 +87,7 @@ let
       "workspaces-toolbar-button"
       "keepassxc-browser_keepassxc_org-browser-action"
       "adnauseam_rednoise_org-browser-action"
-      "_c4b582ec-4343-438c-bda2-2f691c16c262_-browser-action"
+      "_8454caa8-cebc-4486-8b23-9771f187ed6c_-browser-action"
       "addon_darkreader_org-browser-action"
       "sponsorblocker_ajay_app-browser-action"
       "moz-addon-prod_7tv_app-browser-action"
@@ -172,6 +178,7 @@ in
           floorp-bin = prev.floorp-bin.overrideAttrs (oldAttrs: {
             desktopItem = oldAttrs.desktopItem.override {
               desktopName = "Firefox";
+              icon = "${firefoxClassicLogo}";
             };
           });
         }
@@ -292,6 +299,7 @@ in
 
       DisableTelemetry = true;
       DisablePocket = true;
+      TranslateEnabled = false;
       NetworkPrediction = false;
 
       SearchEngines = {
@@ -336,6 +344,22 @@ in
         "signon.autofillForms" = false;
         "signon.formlessCapture.enabled" = false;
         "dom.disable_window_move_resize" = true;
+      };
+
+      "3rdparty".Extensions."adnauseam@rednoise.org" = {
+        userSettings = [
+          [
+            "advancedUserEnabled"
+            "true"
+          ]
+        ];
+        advancedSettings = [
+          [
+            "userResourcesLocation"
+            twitchAdSolutionsVaftPermalink
+          ]
+        ];
+        toOverwrite.filters = [ "twitch.tv##+js(twitch-videoad)" ];
       };
 
       ExtensionSettings = {

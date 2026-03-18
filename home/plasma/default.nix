@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   imports = [
     ./dolphin.nix
@@ -14,6 +14,15 @@
     workspace = {
       lookAndFeel = "org.kde.breezedark.desktop";
       colorScheme = "BreezeDark";
+    };
+
+    input.keyboard = {
+      layouts = [
+        { layout = "us"; }
+        { layout = "ru"; }
+      ];
+      options = [ "grp:alt_shift_toggle" ];
+      switchingPolicy = "global";
     };
 
     input.touchpads = [
@@ -48,6 +57,8 @@
         value = false;
         immutable = true;
       };
+      plasmarc.OSD.kbdLayoutChangedEnabled = false;
+      kwalletrc.Wallet.Enabled = false;
 
       kscreenlockerrc.Daemon = {
         Autolock = true;
@@ -71,6 +82,9 @@
     };
   };
 
+  xdg.configFile."systemd/user/plasma-baloorunner.service".source =
+    config.lib.file.mkOutOfStoreSymlink "/dev/null";
+
   systemd.user.services.krunner-daemon = {
     Unit = {
       Description = "Start KRunner daemon";
@@ -86,4 +100,5 @@
 
     Install.WantedBy = [ "graphical-session.target" ];
   };
+
 }
