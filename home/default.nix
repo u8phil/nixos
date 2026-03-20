@@ -4,6 +4,7 @@
     ./alacritty.nix
     ./freecad.nix
     ./floorp.nix
+    ./github-mcp.nix
     ./keepassxc.nix
     ./ssh.nix
     ./plasma
@@ -18,13 +19,22 @@
     enable = true;
     enableFishIntegration = true;
   };
+  sops = {
+    defaultSopsFile = ../secrets/work-vpn.yaml;
+    defaultSopsFormat = "yaml";
+
+    age.sshKeyPaths = [
+      "/var/lib/sops-nix/keys/sops-nix-ssh"
+    ];
+  };
 
   home.packages = with pkgs; [
     nixd
     devenv
-    steam
+    rust-bin.stable.latest.default
     mcp-nixos
-    github-mcp-server
+    zellij
+    gitui
     telegram-desktop
     alacritty
     nixfmt

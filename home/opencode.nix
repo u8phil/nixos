@@ -19,7 +19,19 @@
           }
         )).opencode;
       enable = true;
-      settings.theme = "one-dark";
+      settings = {
+        theme = "one-dark";
+        mcp.github = {
+          type = "local";
+          command = [
+            "github-mcp-server"
+            "stdio"
+            "--read-only"
+          ];
+          environment.GITHUB_PERSONAL_ACCESS_TOKEN = "{env:GITHUB_PERSONAL_ACCESS_TOKEN}";
+          enabled = true;
+        };
+      };
     };
 
 }

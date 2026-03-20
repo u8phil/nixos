@@ -1,5 +1,8 @@
 { config, ... }:
 {
+  # never set template's path to a folder in a user's directory, when switching it creates a folder with root privileges
+  # and then creates a file with the defined priveleges, so if you point to a file ~/example/foo.conf, the example
+  # folder will be created with root privilges and foo.conf will be created with owner/group/mode ownage
   sops = {
     defaultSopsFile = ../../secrets/work-vpn.yaml;
     defaultSopsFormat = "yaml";
@@ -12,22 +15,6 @@
       owner = "root";
       group = "root";
       mode = "0400";
-    };
-
-    secrets.github-mcp = {
-      owner = "phil";
-      group = "users";
-      mode = "0400";
-    };
-
-    templates.github-mcp-environment = {
-      owner = "phil";
-      group = "users";
-      mode = "0400";
-      path = "/home/phil/.config/environment.d/10-github-mcp.conf";
-      content = ''
-        GITHUB_PERSONAL_ACCESS_TOKEN=${config.sops.placeholder.github-mcp}
-      '';
     };
 
     templates.ssh-host-config = {

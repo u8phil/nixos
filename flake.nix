@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
+    devenv.url = "github:cachix/devenv/v1.11.2";
+
     home-manager = {
       url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -13,6 +15,11 @@
       url = "github:nix-community/plasma-manager/trunk";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
+    };
+
+    rust-overlay = {
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     sops-nix = {
@@ -30,16 +37,25 @@
 
   outputs =
     inputs@{
+      devenv,
       nixpkgs,
       home-manager,
       mcp-nixos,
       plasma-manager,
+      rust-overlay,
       sops-nix,
       ...
     }:
     let
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      overlays = [
+        devenv.overlays.default
+        mcp-nixos.overlays.default
+        rust-overlay.overlays.default
+      ];
+      pkgs = import nixpkgs {
+        inherit system overlays;
+      };
     in
     {
       packages.${system}.sops = pkgs.sops;
@@ -58,16 +74,15 @@
           sops-nix.nixosModules.sops
           home-manager.nixosModules.home-manager
           {
-            nixpkgs.overlays = [
-              mcp-nixos.overlays.default
-            ];
+            nixpkgs.overlays = overlays;
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "bak";
 
             home-manager.users.phil = import ./home/default.nix;
             home-manager.sharedModules = [
-              plasma-manager.homeManagerModules.plasma-manager
+              sops-nix.homeModules.sops
+              plasma-manager.homeModules.plasma-manager
             ];
           }
         ];

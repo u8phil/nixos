@@ -17,6 +17,7 @@
     ./sops.nix
     ./openvpn.nix
     ./hysteria.nix
+    ./steam.nix
   ];
 
   # out-of-memory killer

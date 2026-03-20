@@ -58,7 +58,9 @@
         immutable = true;
       };
       plasmarc.OSD.kbdLayoutChangedEnabled = false;
-      kwalletrc.Wallet.Enabled = false;
+
+      # used for wifi passwords
+      kwalletrc.Wallet.Enabled = true;
 
       kscreenlockerrc.Daemon = {
         Autolock = true;
@@ -93,7 +95,7 @@
     };
 
     Service = {
-      Type = "oneshot";
+      # don't make the daemon oneshot
       ExecStart = "${pkgs.kdePackages.plasma-workspace}/bin/krunner --daemon";
       RemainAfterExit = true;
     };

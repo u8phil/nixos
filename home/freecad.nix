@@ -2,7 +2,7 @@
 let
   weeklyTag = "weekly-2026.03.18";
 
-  freecadLatest = pkgs.freecad.overrideAttrs (old: {
+  freecad = pkgs.freecad.overrideAttrs (old: {
     version = "1.2.0dev+${weeklyTag}";
 
     src = pkgs.fetchFromGitHub {
@@ -22,6 +22,6 @@ let
 in
 {
   home.packages = [
-    freecadLatest
+    # freecad
   ];
 }

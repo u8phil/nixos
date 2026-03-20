@@ -9,6 +9,8 @@
     theme = inputs.nixos-grub-themes.packages.${pkgs.system}.nixos;
   };
 
+  # my laptop is shit
+  boot.blacklistedKernelModules = [ "amd_sfh" ];
   boot.loader.timeout = 1;
   # boot.kernel = pkgs.linuxPa
   # boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
@@ -26,6 +28,6 @@
 
   boot.loader.efi = {
     canTouchEfiVariables = true;
-    efiSysMountPoint = "/boot/efi";
+    # do not use efiSysMountPoint, it fucks with predefined boot in hardware conf
   };
 }
