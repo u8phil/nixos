@@ -2,7 +2,6 @@
 {
   imports = [
     ./alacritty.nix
-    ./freecad.nix
     ./floorp.nix
     ./github-mcp.nix
     ./keepassxc.nix
@@ -13,6 +12,7 @@
     ./opencode.nix
     ./vscodium.nix
     ./helix.nix
+    ./freecad.nix
   ];
 
   programs.direnv = {
@@ -35,6 +35,10 @@
     mcp-nixos
     zellij
     gitui
+    gearlever
+    appimage-run
+    qbittorrent
+    jetbrains.rust-rover
     telegram-desktop
     alacritty
     nixfmt

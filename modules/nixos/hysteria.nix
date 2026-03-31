@@ -5,6 +5,7 @@
   ...
 }:
 let
+  proxy = "http://127.0.0.1:18081";
   mkConfig =
     params:
     lib.strings.toJSON (
@@ -144,6 +145,21 @@ in
 
   networking.firewall.trustedInterfaces = [
     "hysteria"
+  ];
+
+  nixpkgs.overlays = [
+    (final: prev: {
+      jetbrains = prev.jetbrains // {
+        rust-rover = prev.jetbrains.rust-rover.overrideAttrs (oldAttrs: {
+          src = oldAttrs.src.overrideAttrs (oldSrc: {
+            curlOptsList = (oldSrc.curlOptsList or [ ]) ++ [
+              "--proxy"
+              proxy
+            ];
+          });
+        });
+      };
+    })
   ];
 
   environment.systemPackages = [

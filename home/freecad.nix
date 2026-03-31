@@ -1,27 +1,24 @@
-{ pkgs, ... }:
+{ inputs, pkgs, ... }:
 let
-  weeklyTag = "weekly-2026.03.18";
+  freecadBase = inputs.nixpkgs-master.legacyPackages.${pkgs.stdenv.hostPlatform.system}.freecad;
 
-  freecad = pkgs.freecad.overrideAttrs (old: {
-    version = "1.2.0dev+${weeklyTag}";
+  freecad = pkgs.symlinkJoin {
+    name = "freecad-wrapped";
+    paths = [ freecadBase ];
+    nativeBuildInputs = [ pkgs.makeWrapper ];
 
-    src = pkgs.fetchFromGitHub {
-      owner = "FreeCAD";
-      repo = "FreeCAD";
-      rev = weeklyTag;
-      hash = "sha256-/KFZOS0Ge7xo2TWXX3iXfsZvjTBPS3Z5/5SwwgL5GVo=";
-      fetchSubmodules = true;
-    };
+    postBuild = ''
+      rm -f $out/bin/FreeCAD $out/bin/freecad
 
-    # The Nix PYTHONPATH patch is still required on the weekly build.
-    patches = pkgs.lib.take 1 old.patches;
+      makeWrapper ${freecadBase}/bin/FreeCAD $out/bin/FreeCAD \
+        --set QT_QPA_PLATFORM xcb
 
-    # Upstream now resolves `gmsh` from PATH itself.
-    postPatch = "";
-  });
+      ln -s $out/bin/FreeCAD $out/bin/freecad
+    '';
+  };
 in
 {
   home.packages = [
-    # freecad
+    freecad
   ];
 }

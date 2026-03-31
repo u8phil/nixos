@@ -1,5 +1,7 @@
 { pkgs, ... }:
 {
+  home.packages = [ pkgs.tinymist ];
+
   programs.vscode = {
     enable = true;
     package = pkgs.vscodium;
@@ -7,6 +9,8 @@
     profiles.default = {
       extensions = with pkgs.vscode-extensions; [
         jnoortheen.nix-ide
+        myriad-dreamin.tinymist
+        tomoki1207.pdf
       ];
 
       userSettings = {

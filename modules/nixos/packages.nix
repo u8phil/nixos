@@ -16,7 +16,6 @@
     git
     ripgrep
     sops
-    openvpn3
     file
     (lib.hiPrio pkgs.uutils-coreutils-noprefix)
   ];

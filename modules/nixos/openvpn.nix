@@ -1,8 +1,19 @@
-{ config, pkgs, ... }:
+{
+  config,
+  inputs,
+  pkgs,
+  ...
+}:
+
+let
+  openvpn3Package = inputs.nixpkgs-master.legacyPackages.${pkgs.stdenv.hostPlatform.system}.openvpn3;
+in
 
 {
   programs.openvpn3 = {
     enable = true;
+    package = openvpn3Package;
+
     netcfg.settings = {
       systemd_resolved = true;
     };
@@ -105,10 +116,10 @@
     };
 
     script = ''
-      ${pkgs.openvpn3}/bin/openvpn3 config-manage --config work --exists --quiet && \
-        ${pkgs.openvpn3}/bin/openvpn3 config-remove --config work --force || true
+      ${openvpn3Package}/bin/openvpn3 config-manage --config work --exists --quiet && \
+        ${openvpn3Package}/bin/openvpn3 config-remove --config work --force || true
 
-      ${pkgs.openvpn3}/bin/openvpn3 config-import \
+      ${openvpn3Package}/bin/openvpn3 config-import \
         --persistent \
         --name work \
         --config ${config.sops.templates."openvpn-work-ovpn".path}
@@ -119,25 +130,25 @@
     (pkgs.writeShellScriptBin "vc" ''
       set -euo pipefail
 
-      if sudo ${pkgs.openvpn3}/bin/openvpn3 sessions-list | ${pkgs.gnugrep}/bin/grep -Eq "Config(uration)? name: +work"; then
+      if sudo ${openvpn3Package}/bin/openvpn3 sessions-list | ${pkgs.gnugrep}/bin/grep -Eq "Config(uration)? name: +work"; then
         echo "work VPN is already connected"
         exit 0
       fi
 
-      sudo ${pkgs.openvpn3}/bin/openvpn3 session-manage --cleanup || true
-      exec sudo ${pkgs.openvpn3}/bin/openvpn3 session-start --config work
+      sudo ${openvpn3Package}/bin/openvpn3 session-manage --cleanup || true
+      exec sudo ${openvpn3Package}/bin/openvpn3 session-start --config work
     '')
 
     (pkgs.writeShellScriptBin "vd" ''
       set -euo pipefail
 
-      if ! sudo ${pkgs.openvpn3}/bin/openvpn3 sessions-list | ${pkgs.gnugrep}/bin/grep -Eq "Config(uration)? name: +work"; then
+      if ! sudo ${openvpn3Package}/bin/openvpn3 sessions-list | ${pkgs.gnugrep}/bin/grep -Eq "Config(uration)? name: +work"; then
         echo "work VPN is not connected"
         exit 0
       fi
 
-      sudo ${pkgs.openvpn3}/bin/openvpn3 session-manage --config work --disconnect || true
-      exec sudo ${pkgs.openvpn3}/bin/openvpn3 session-manage --cleanup
+      sudo ${openvpn3Package}/bin/openvpn3 session-manage --config work --disconnect || true
+      exec sudo ${openvpn3Package}/bin/openvpn3 session-manage --cleanup
     '')
   ];
 }

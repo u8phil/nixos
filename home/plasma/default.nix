@@ -1,4 +1,12 @@
-{ config, pkgs, ... }:
+{
+  config,
+  inputs,
+  pkgs,
+  ...
+}:
+let
+  darklyPackages = inputs.darkly.packages.${pkgs.stdenv.hostPlatform.system};
+in
 {
   imports = [
     ./dolphin.nix
@@ -7,13 +15,34 @@
     ./panels/stats.nix
   ];
 
+  qt = {
+    enable = true;
+    platformTheme.name = "kde";
+    style = {
+      name = "Darkly";
+      package = [
+        darklyPackages.darkly-qt5
+        darklyPackages.darkly-qt6
+      ];
+    };
+  };
+
   programs.plasma = {
     enable = true;
     overrideConfig = true;
+    resetFilesExclude = [
+      "dolphinrc"
+      "plasma-org.kde.plasma.desktop-appletsrc"
+    ];
 
     workspace = {
-      lookAndFeel = "org.kde.breezedark.desktop";
+      theme = "Darkly";
       colorScheme = "BreezeDark";
+      widgetStyle = "Darkly";
+      windowDecorations = {
+        library = "org.kde.darkly";
+        theme = "Darkly";
+      };
     };
 
     input.keyboard = {
@@ -40,6 +69,7 @@
     kwin = {
       edgeBarrier = 0;
       cornerBarrier = false;
+      effects.blur.enable = false;
       effects.shakeCursor.enable = false;
       effects.desktopSwitching.animation = "fade";
     };
@@ -69,6 +99,7 @@
       };
 
       kwinrc = {
+        Plugins.better_blur_dxEnabled = true;
         TabBox.DelayTime = 0;
         TabBox.LayoutName = "big_icons";
         TabBoxAlternative.LayoutName = "big_icons";
@@ -83,6 +114,10 @@
       };
     };
   };
+
+  home.packages = with pkgs; [
+    unrar
+  ];
 
   xdg.configFile."systemd/user/plasma-baloorunner.service".source =
     config.lib.file.mkOutOfStoreSymlink "/dev/null";

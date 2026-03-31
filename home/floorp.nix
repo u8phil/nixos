@@ -34,6 +34,10 @@ let
       id = "{8454caa8-cebc-4486-8b23-9771f187ed6c}";
       slug = "600-sound-volume-privacy";
     }
+    {
+      id = "{9a3104a2-02c2-464c-b069-82344e5ed4ec}";
+      slug = "youtube-no-translation";
+    }
   ];
 
   mkLatestAmoExtension = extension: {
@@ -60,6 +64,7 @@ let
         "adnauseam_rednoise_org-browser-action"
         "_8454caa8-cebc-4486-8b23-9771f187ed6c_-browser-action"
         "addon_darkreader_org-browser-action"
+        "_9a3104a2-02c2-464c-b069-82344e5ed4ec_-browser-action"
         "keepassxc-browser_keepassxc_org-browser-action"
         "downloads-button"
       ];
@@ -89,6 +94,7 @@ let
       "adnauseam_rednoise_org-browser-action"
       "_8454caa8-cebc-4486-8b23-9771f187ed6c_-browser-action"
       "addon_darkreader_org-browser-action"
+      "_9a3104a2-02c2-464c-b069-82344e5ed4ec_-browser-action"
       "sponsorblocker_ajay_app-browser-action"
       "moz-addon-prod_7tv_app-browser-action"
       "screenshot-button"

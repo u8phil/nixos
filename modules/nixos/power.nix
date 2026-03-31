@@ -1,14 +1,29 @@
-{ ... }:
+{ config, ... }:
+
+let
+  resumeDevice =
+    if config.swapDevices == [ ] then
+      ""
+    else
+      let
+        swapDevice = builtins.head config.swapDevices;
+      in
+      if swapDevice ? device then swapDevice.device else "/dev/disk/by-label/${swapDevice.label}";
+in
 
 {
-  # TODO: when swap is set up
-  # services.logind.settings.Login = {
-  #   HandleLidSwitch = "hibernate";
-  #   HandleLidSwitchExternalPower = "hibernate";
-  #   HandleLidSwitchDocked = "hibernate";
-  # };
+  assertions = [
+    {
+      assertion = config.swapDevices != [ ];
+      message = "Hibernate requires at least one configured swap device.";
+    }
+  ];
 
-  # systemd.sleep.extraConfig = ''
-  #   HibernateDelaySec=1h
-  # '';
+  boot = {
+    kernelParams = [ "zswap.enabled=1" ];
+    inherit resumeDevice;
+  };
+
+  services.logind.settings.Login.HandleLidSwitch = "suspend-then-hibernate";
+  systemd.sleep.settings.Sleep.HibernateDelaySec = "3min";
 }

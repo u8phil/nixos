@@ -9,6 +9,7 @@
     ./power.nix
     ./locale.nix
     ./desktop.nix
+    ./docker.nix
     ./printing.nix
     ./audio.nix
     ./users.nix
@@ -25,6 +26,8 @@
     enableRootSlice = true;
     enableUserSlices = true;
   };
+
+  security.polkit.enable = true;
 
   security.wrappers.sniffnet = {
     owner = "root";
