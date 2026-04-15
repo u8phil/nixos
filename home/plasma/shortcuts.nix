@@ -8,6 +8,7 @@
     };
 
     kwin = {
+      "Edit Tiles" = "none";
       Overview = "none";
       "Switch to Desktop 1" = "Alt+1";
       "Switch to Desktop 2" = "Alt+2";
@@ -24,6 +25,10 @@
         "Meta+C"
         "Meta+Enter"
       ];
+    };
+
+    "services/org.telegram.desktop.desktop" = {
+      _launch = [ "Meta+T" ];
     };
 
     "services/org.kde.krunner.desktop" = {

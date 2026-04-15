@@ -9,6 +9,8 @@
     "nix-command"
     "flakes"
   ];
+
+  nix.settings.trusted-users = [ "phil" ];
   nix.settings.extra-substituters = [
     "https://devenv.cachix.org"
   ];
@@ -23,6 +25,7 @@
   };
 
   nix.optimise.automatic = true;
+  programs.nix-ld.enable = true;
 
   system.stateVersion = "25.11";
 }

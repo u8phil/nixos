@@ -116,7 +116,8 @@ in
   };
 
   home.packages = with pkgs; [
-    unrar
+    unrar # for ark to support rar
+    kdePackages.kcalc
   ];
 
   xdg.configFile."systemd/user/plasma-baloorunner.service".source =

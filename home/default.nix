@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   imports = [
-    ./alacritty.nix
+    ./claude-code.nix
     ./floorp.nix
     ./github-mcp.nix
     ./keepassxc.nix
@@ -13,11 +13,14 @@
     ./vscodium.nix
     ./helix.nix
     ./freecad.nix
+    ./alacritty.nix
+    ./zed.nix
   ];
 
   programs.direnv = {
     enable = true;
     enableFishIntegration = true;
+    silent = true;
   };
   sops = {
     defaultSopsFile = ../secrets/work-vpn.yaml;
@@ -40,7 +43,6 @@
     qbittorrent
     jetbrains.rust-rover
     telegram-desktop
-    alacritty
     nixfmt
     tokei
     pinta
@@ -52,6 +54,11 @@
   ];
 
   xdg.autostart.enable = true;
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
+    configPackages = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
+  };
 
   # button control from bluetooth headphones
   services.mpris-proxy.enable = true;

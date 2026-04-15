@@ -3,9 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
-
-    devenv.url = "github:cachix/devenv/v1.11.2";
 
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -48,7 +45,6 @@
 
   outputs =
     inputs@{
-      devenv,
       nixpkgs,
       home-manager,
       mcp-nixos,
@@ -60,7 +56,6 @@
     let
       system = "x86_64-linux";
       overlays = [
-        devenv.overlays.default
         mcp-nixos.overlays.default
         rust-overlay.overlays.default
       ];

@@ -6,5 +6,5 @@
   systemd.services."NetworkManager-wait-online".enable = false;
   services.resolved.enable = true;
 
-  networking.firewall.allowedTCPPorts = [ 8000 ];
+  networking.firewall.allowedTCPPorts = [ 8000 8443 ];
 }

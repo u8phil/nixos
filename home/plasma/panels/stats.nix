@@ -8,7 +8,7 @@ let
   topOffset = 16;
   widgetWidth = 350;
   chartHeight = 200;
-  textHeight = 45;
+  textHeight = 120;
   t = toString;
   containmentPath = "Containments/${t desktopContainmentId}";
   appletPath = id: "${containmentPath}/Applets/${t id}";

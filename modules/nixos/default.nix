@@ -10,6 +10,7 @@
     ./locale.nix
     ./desktop.nix
     ./docker.nix
+    ./virtualisation.nix
     ./printing.nix
     ./audio.nix
     ./users.nix
@@ -26,6 +27,8 @@
     enableRootSlice = true;
     enableUserSlices = true;
   };
+
+  environment.shells = [ pkgs.fish ];
 
   security.polkit.enable = true;
 
