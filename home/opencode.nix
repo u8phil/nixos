@@ -31,7 +31,6 @@ in
           "stdio"
           "--read-only"
         ];
-        environment.GITHUB_PERSONAL_ACCESS_TOKEN = "{env:GITHUB_PERSONAL_ACCESS_TOKEN}";
       };
       mcp."microsoft-learn" = {
         enabled = true;

@@ -32,6 +32,7 @@
   };
 
   home.packages = with pkgs; [
+    nodejs
     nixd
     devenv
     rust-bin.stable.latest.default

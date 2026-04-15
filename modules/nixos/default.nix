@@ -20,6 +20,7 @@
     ./openvpn.nix
     ./hysteria.nix
     ./steam.nix
+    ./docs-local.nix
   ];
 
   # out-of-memory killer

@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, claude-plugins, ... }:
 {
   programs.claude-code =
     let
@@ -19,13 +19,20 @@
           }
         )).claude-code;
       enable = true;
+
+      plugins = claude-plugins;
+
       mcpServers.github = {
+        type = "stdio";
         command = "github-mcp-server";
         args = [
           "stdio"
           "--read-only"
         ];
-        env.GITHUB_PERSONAL_ACCESS_TOKEN = "{env:GITHUB_PERSONAL_ACCESS_TOKEN}";
+      };
+      mcpServers."docs-mcp" = {
+        type = "sse";
+        url = "http://127.0.0.1:6820/sse";
       };
     };
 }

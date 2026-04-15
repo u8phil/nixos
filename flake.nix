@@ -41,6 +41,12 @@
     };
 
     nixos-grub-themes.url = "github:jeslie0/nixos-grub-themes";
+
+    context-mode.url = "github:mksglu/context-mode";
+    context-mode.flake = false;
+
+    caveman.url = "github:JuliusBrussee/caveman";
+    caveman.flake = false;
   };
 
   outputs =
@@ -51,6 +57,8 @@
       plasma-manager,
       rust-overlay,
       sops-nix,
+      context-mode,
+      caveman,
       ...
     }:
     let
@@ -84,7 +92,10 @@
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "bak";
-            home-manager.extraSpecialArgs = { inherit inputs; };
+            home-manager.extraSpecialArgs = {
+              inherit inputs;
+              claude-plugins = [ context-mode caveman ];
+            };
 
             home-manager.users.phil = import ./home/default.nix;
             home-manager.sharedModules = [
