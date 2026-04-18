@@ -15,6 +15,11 @@
       inputs.home-manager.follows = "home-manager";
     };
 
+    betterBlurDx = {
+      url = "github:xarblu/kwin-effects-better-blur-dx";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";

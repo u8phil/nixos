@@ -8,6 +8,74 @@ let
     url = "https://upload.wikimedia.org/wikipedia/commons/8/84/Mozilla_Firefox_3.5_logo.png";
     hash = "sha256-9EOE521nTOFzTkpGf912J9IH4WNUoBqLqdybTwnMzRc=";
   };
+  proxyTogglePatchedXpi =
+    pkgs.runCommand "proxy-toggle-hysteria-xpi"
+      {
+        nativeBuildInputs = [
+          pkgs.unzip
+          pkgs.zip
+        ];
+        src = pkgs.fetchurl {
+          url = "https://addons.mozilla.org/firefox/downloads/file/4652025/proxy_toggle-0.3.xpi";
+          hash = "sha256-LeI6u9SNsaB17YtCm5yL8kcnE+CF6mQBALeHM4M9FyI=";
+        };
+      }
+      ''
+            mkdir work
+            cd work
+            unzip "$src"
+
+            substituteInPlace background.js \
+              --replace-fail 'const DEFAULT_PROXY_SETTINGS = Object.freeze({
+          type: "direct",
+          host: "",
+          port: 0,
+          username: "",
+          password: "",
+          proxyDNS: false,
+        });' 'const DEFAULT_PROXY_SETTINGS = Object.freeze({
+          type: "socks",
+          host: "127.0.0.1",
+          port: 1080,
+          username: "",
+          password: "",
+          proxyDNS: true,
+        });'
+
+            substituteInPlace settings.js \
+              --replace-fail 'browser.storage.local.get({
+            skipLocal: true,
+            proxySettings: {
+              type: "direct",
+              host: "",
+              port: 0,
+              username: "",
+              password: "",
+              proxyDNS: false,
+            },
+            useBlacklist: true,
+            useWhitelist: false,
+            blacklist: [],
+            whitelist: [],
+          });' 'browser.storage.local.get({
+            skipLocal: true,
+            proxySettings: {
+              type: "socks",
+              host: "127.0.0.1",
+              port: 1080,
+              username: "",
+              password: "",
+              proxyDNS: true,
+            },
+            useBlacklist: true,
+            useWhitelist: false,
+            blacklist: [],
+            whitelist: [],
+          });'
+
+            mkdir -p "$out"
+            zip -qr "$out/proxy_toggle-hysteria.xpi" .
+      '';
 
   floorpExtensions = [
     {
@@ -38,13 +106,19 @@ let
       id = "{9a3104a2-02c2-464c-b069-82344e5ed4ec}";
       slug = "youtube-no-translation";
     }
+    {
+      id = "proxytoggle@devpg.net";
+      install_url = "file://${proxyTogglePatchedXpi}/proxy_toggle-hysteria.xpi";
+    }
   ];
 
-  mkLatestAmoExtension = extension: {
+  mkExtensionSetting = extension: {
     name = extension.id;
     value = {
       installation_mode = "normal_installed";
-      install_url = "https://addons.mozilla.org/firefox/downloads/latest/${extension.slug}/latest.xpi";
+      install_url =
+        extension.install_url
+          or "https://addons.mozilla.org/firefox/downloads/latest/${extension.slug}/latest.xpi";
     };
   };
 
@@ -54,6 +128,8 @@ let
       "unified-extensions-area" = [
         "sponsorblocker_ajay_app-browser-action"
         "moz-addon-prod_7tv_app-browser-action"
+        "adnauseam_rednoise_org-browser-action"
+        "_9a3104a2-02c2-464c-b069-82344e5ed4ec_-browser-action"
       ];
       "nav-bar" = [
         "customizableui-special-spring1"
@@ -61,10 +137,9 @@ let
         "vertical-spacer"
         "urlbar-container"
         "unified-extensions-button"
-        "adnauseam_rednoise_org-browser-action"
+        "proxytoggle_devpg_net-browser-action"
         "_8454caa8-cebc-4486-8b23-9771f187ed6c_-browser-action"
         "addon_darkreader_org-browser-action"
-        "_9a3104a2-02c2-464c-b069-82344e5ed4ec_-browser-action"
         "keepassxc-browser_keepassxc_org-browser-action"
         "downloads-button"
       ];
@@ -90,6 +165,7 @@ let
       "profile-manager-button"
       "undo-closed-tab"
       "workspaces-toolbar-button"
+      "proxytoggle_devpg_net-browser-action"
       "keepassxc-browser_keepassxc_org-browser-action"
       "adnauseam_rednoise_org-browser-action"
       "_8454caa8-cebc-4486-8b23-9771f187ed6c_-browser-action"
@@ -371,7 +447,7 @@ in
       ExtensionSettings = {
         "*".installation_mode = "allowed";
       }
-      // builtins.listToAttrs (map mkLatestAmoExtension floorpExtensions);
+      // builtins.listToAttrs (map mkExtensionSetting floorpExtensions);
     };
   };
 }

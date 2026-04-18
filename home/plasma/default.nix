@@ -86,6 +86,8 @@
       };
       plasmarc.OSD.kbdLayoutChangedEnabled = false;
 
+      darklyrc.Common.FloatingTitlebar = false;
+
       # used for wifi passwords
       kwalletrc.Wallet.Enabled = true;
 
