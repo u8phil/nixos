@@ -4,9 +4,6 @@
   pkgs,
   ...
 }:
-let
-  darklyPackages = inputs.darkly.packages.${pkgs.stdenv.hostPlatform.system};
-in
 {
   imports = [
     ./dolphin.nix
@@ -21,8 +18,8 @@ in
     style = {
       name = "Darkly";
       package = [
-        darklyPackages.darkly-qt5
-        darklyPackages.darkly-qt6
+        pkgs.darkly-qt5
+        pkgs.darkly
       ];
     };
   };

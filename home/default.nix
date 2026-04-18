@@ -1,15 +1,13 @@
 { pkgs, ... }:
 {
   imports = [
-    ./claude-code.nix
+    ./ai
     ./floorp.nix
-    ./github-mcp.nix
     ./keepassxc.nix
     ./ssh.nix
     ./plasma
     ./rclone.nix
     ./discord.nix
-    ./opencode.nix
     ./vscodium.nix
     ./helix.nix
     ./freecad.nix

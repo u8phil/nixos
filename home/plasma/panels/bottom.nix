@@ -99,11 +99,16 @@
           plugin = "org.kde.plasma.bluetooth";
         };
 
+        "Containments/1505/Applets/1510/Applets/1527" = {
+          immutability = 1;
+          plugin = "org.kde.plasma.keyboardlayout";
+        };
+
         "Containments/1505/Applets/1510/General" = {
-          extraItems = "org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.clipboard";
+          extraItems = "org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.brightness,org.kde.plasma.clipboard,org.kde.plasma.keyboardlayout";
           hiddenItems = "org.kde.plasma.brightness,org.kde.plasma.clipboard";
           knownItems = "org.kde.plasma.cameraindicator,org.kde.plasma.devicenotifier,org.kde.plasma.clipboard,org.kde.plasma.mediacontroller,org.kde.plasma.manage-inputmethod,org.kde.plasma.notifications,org.kde.kscreen,org.kde.plasma.keyboardindicator,org.kde.plasma.keyboardlayout,org.kde.plasma.battery,org.kde.plasma.printmanager,org.kde.plasma.brightness,org.kde.plasma.weather,org.kde.plasma.networkmanagement,org.kde.plasma.bluetooth,org.kde.plasma.volume";
-          shownItems = "org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.networkmanagement,org.kde.plasma.volume";
+          shownItems = "org.kde.plasma.battery,org.kde.plasma.bluetooth,org.kde.plasma.networkmanagement,org.kde.plasma.volume,org.kde.plasma.keyboardlayout";
         };
 
         "Containments/1505/Applets/1523" = {

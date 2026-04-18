@@ -15,16 +15,6 @@
       inputs.home-manager.follows = "home-manager";
     };
 
-    darkly = {
-      url = "github:Bali10050/Darkly";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    betterBlurDx = {
-      url = "github:xarblu/kwin-effects-better-blur-dx";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -47,6 +37,9 @@
 
     caveman.url = "github:JuliusBrussee/caveman";
     caveman.flake = false;
+
+    docs-mcp-server.url = "github:arabold/docs-mcp-server";
+    docs-mcp-server.flake = false;
   };
 
   outputs =

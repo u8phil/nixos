@@ -1,8 +1,15 @@
-{ pkgs, claude-plugins, ... }:
+{
+  pkgs,
+  claude-plugins,
+  inputs,
+  ...
+}:
 {
   programs.claude-code =
     let
       proxy = "http://127.0.0.1:18081";
+      docsMcpVersion =
+        (builtins.fromJSON (builtins.readFile (inputs."docs-mcp-server" + "/package.json"))).version;
     in
     {
       package =
@@ -21,6 +28,13 @@
       enable = true;
 
       plugins = claude-plugins;
+      skills = inputs."docs-mcp-server" + "/skills";
+
+      settings.effortLevel = "high";
+      settings.statusLine = {
+        type = "command";
+        command = "bash \"${inputs.caveman}/hooks/caveman-statusline.sh\"";
+      };
 
       mcpServers.github = {
         type = "stdio";
@@ -31,8 +45,12 @@
         ];
       };
       mcpServers."docs-mcp" = {
-        type = "sse";
-        url = "http://127.0.0.1:6820/sse";
+        type = "stdio";
+        command = "${pkgs.nodejs}/bin/npx";
+        args = [
+          "-y"
+          "@arabold/docs-mcp-server@${docsMcpVersion}"
+        ];
       };
     };
 }

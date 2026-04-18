@@ -4,7 +4,7 @@
   ...
 }:
 {
-  sops.secrets.github-mcp = {};
+  sops.secrets.github-mcp = { };
   sops.templates.github-mcp = {
     path = "/home/phil/.config/environment.d/10-github-mcp.conf";
     content = ''
