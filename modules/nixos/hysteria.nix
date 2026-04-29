@@ -153,7 +153,7 @@ in
         rust-rover = prev.jetbrains.rust-rover.overrideAttrs (oldAttrs: {
           src = oldAttrs.src.overrideAttrs (oldSrc: {
             curlOptsList = (oldSrc.curlOptsList or [ ]) ++ [
-              "--proxy"
+              "-x"
               proxy
             ];
           });

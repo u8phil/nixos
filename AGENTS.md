@@ -34,10 +34,10 @@ Home Manager is integrated through the NixOS flake, not managed as a separate st
 ## Validation Rules
 
 - NEVER use `nix build` in this repository for routine validation.
-- Prioritize `sudo nixos-rebuild dry-build --flake .#nixos` for validation.
-- If activation behavior matters, prioritize `sudo nixos-rebuild dry-activate --flake .#nixos`.
-- Use `sudo nixos-rebuild switch --flake .#nixos` only when explicitly asked to apply the changes.
-- For quick syntax checks, `nix-instantiate --parse <file>` is fine, but the preferred end-to-end validation path is still the `sudo nixos-rebuild dry-*` workflow.
+- Prioritize `nh os build -n .#nixos` (or `--dry`) for validation.
+- If activation behavior matters, prioritize `nh os switch -n .#nixos`.
+- Use `nh os switch .#nixos` only when explicitly asked to apply the changes.
+- For quick syntax checks, `nix-instantiate --parse <file>` is fine, but the preferred end-to-end validation path is still the `nh os build -n` workflow.
 
 ## Notes For Agents
 

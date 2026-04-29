@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   pkgs,
   ...
 }:
@@ -34,8 +33,11 @@
 
     workspace = {
       theme = "Darkly";
-      colorScheme = "BreezeDark";
+      colorScheme = "Darkly";
       widgetStyle = "Darkly";
+      iconTheme = "breeze-dark";
+      cursor.theme = "BreezeDark";
+      
       windowDecorations = {
         library = "org.kde.darkly";
         theme = "Darkly";

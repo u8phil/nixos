@@ -8,8 +8,6 @@
   programs.claude-code =
     let
       proxy = "http://127.0.0.1:18081";
-      docsMcpVersion =
-        (builtins.fromJSON (builtins.readFile (inputs."docs-mcp-server" + "/package.json"))).version;
     in
     {
       package =
@@ -28,7 +26,7 @@
       enable = true;
 
       plugins = claude-plugins;
-      skills = inputs."docs-mcp-server" + "/skills";
+      # skills = inputs."docs-mcp-server" + "/skills";
 
       settings.effortLevel = "high";
       settings.statusLine = {
@@ -42,14 +40,6 @@
         args = [
           "stdio"
           "--read-only"
-        ];
-      };
-      mcpServers."docs-mcp" = {
-        type = "stdio";
-        command = "${pkgs.nodejs}/bin/npx";
-        args = [
-          "-y"
-          "@arabold/docs-mcp-server@${docsMcpVersion}"
         ];
       };
     };

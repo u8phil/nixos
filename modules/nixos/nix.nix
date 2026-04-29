@@ -18,12 +18,6 @@
     "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
   ];
 
-  nix.gc = {
-    automatic = true;
-    dates = "*-*-1/3 03:15:00";
-    options = "--delete-older-than 14d";
-  };
-
   nix.optimise.automatic = true;
   programs.nix-ld.enable = true;
 

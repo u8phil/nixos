@@ -30,10 +30,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    mcp-nixos = {
-      url = "github:utensils/mcp-nixos";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    #mcp-nixos = {
+    #  url = "github:utensils/mcp-nixos";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    #};
 
     nixos-grub-themes.url = "github:jeslie0/nixos-grub-themes";
 
@@ -45,24 +45,27 @@
 
     docs-mcp-server.url = "github:arabold/docs-mcp-server";
     docs-mcp-server.flake = false;
+
+    nix-index-database.url = "github:nix-community/nix-index-database";
+    nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
     inputs@{
       nixpkgs,
       home-manager,
-      mcp-nixos,
+      # mcp-nixos,
       plasma-manager,
       rust-overlay,
       sops-nix,
       context-mode,
       caveman,
+      nix-index-database,
       ...
     }:
     let
       system = "x86_64-linux";
       overlays = [
-        mcp-nixos.overlays.default
         rust-overlay.overlays.default
       ];
       pkgs = import nixpkgs {
@@ -85,6 +88,7 @@
           ./hosts/nixos
           sops-nix.nixosModules.sops
           home-manager.nixosModules.home-manager
+          nix-index-database.nixosModules.default
           {
             nixpkgs.overlays = overlays;
             home-manager.useGlobalPkgs = true;

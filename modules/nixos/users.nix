@@ -10,6 +10,7 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      "dialout"
     ];
     hashedPassword = "$y$j9T$lyT7epQMLV/HsWKXl5Syj/$3cm43fXtQHwrdO1vpQsxk5P0JqNAWgofEbBH27s0W41";
   };

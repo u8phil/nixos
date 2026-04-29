@@ -13,12 +13,14 @@
     ./freecad.nix
     ./alacritty.nix
     ./zed.nix
+    ./matlab.nix
   ];
 
   programs.direnv = {
     enable = true;
     enableFishIntegration = true;
     silent = true;
+    nix-direnv.enable = true;
   };
   sops = {
     defaultSopsFile = ../secrets/work-vpn.yaml;
@@ -34,7 +36,7 @@
     nixd
     devenv
     rust-bin.stable.latest.default
-    mcp-nixos
+    # mcp-nixos
     zellij
     gitui
     gearlever
@@ -50,6 +52,7 @@
     sniffnet
     baobab
     wl-clipboard
+    mpv
   ];
 
   xdg.autostart.enable = true;

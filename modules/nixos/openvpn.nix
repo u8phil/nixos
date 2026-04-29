@@ -6,60 +6,57 @@
 {
   programs.openvpn3 = {
     enable = true;
-
-    netcfg.settings = {
-      systemd_resolved = true;
-    };
+    netcfg.settings.systemd_resolved = true;
   };
 
   sops.secrets = {
-    "openvpn/work/username" = {
+    "job/username" = {
       owner = "openvpn";
       group = "openvpn";
       mode = "0400";
-      path = "/run/secrets/openvpn/work/username";
+      path = "/run/secrets/job/username";
     };
 
-    "openvpn/work/gate" = {
+    "job/host" = {
       owner = "openvpn";
       group = "openvpn";
       mode = "0400";
-      path = "/run/secrets/openvpn/work/gate";
+      path = "/run/secrets/job/host";
     };
 
-    "openvpn/work/auth" = {
+    "job/auth" = {
       owner = "openvpn";
       group = "openvpn";
       mode = "0400";
-      path = "/run/secrets/openvpn/work/auth";
+      path = "/run/secrets/job/auth";
     };
 
-    "openvpn/work/ca" = {
+    "job/ca" = {
       owner = "openvpn";
       group = "openvpn";
       mode = "0400";
-      path = "/run/secrets/openvpn/work/ca";
+      path = "/run/secrets/job/ca";
     };
 
-    "openvpn/work/cert" = {
+    "job/cert" = {
       owner = "openvpn";
       group = "openvpn";
       mode = "0400";
-      path = "/run/secrets/openvpn/work/cert";
+      path = "/run/secrets/job/cert";
     };
 
-    "openvpn/work/key" = {
+    "job/key" = {
       owner = "openvpn";
       group = "openvpn";
       mode = "0400";
-      path = "/run/secrets/openvpn/work/key";
+      path = "/run/secrets/job/key";
     };
 
-    "openvpn/work/tls-crypt" = {
+    "job/tls-crypt" = {
       owner = "openvpn";
       group = "openvpn";
       mode = "0400";
-      path = "/run/secrets/openvpn/work/tls-crypt";
+      path = "/run/secrets/job/tls-crypt";
     };
   };
 
@@ -69,28 +66,28 @@
     mode = "0400";
 
     content = ''
-      setenv opt PROFILE ${config.sops.placeholder."openvpn/work/username"}@${
-        config.sops.placeholder."openvpn/work/gate"
+      setenv opt PROFILE ${config.sops.placeholder."job/username"}@gate.${
+        config.sops.placeholder."job/host"
       }
-      setenv opt USERNAME ${config.sops.placeholder."openvpn/work/username"}
-      auth-user-pass /run/secrets/openvpn/work/auth
+      setenv opt USERNAME ${config.sops.placeholder."job/username"}
+      auth-user-pass /run/secrets/job/auth
 
-      ca /run/secrets/openvpn/work/ca
-      cert /run/secrets/openvpn/work/cert
+      ca /run/secrets/job/ca
+      cert /run/secrets/job/cert
       cipher AES-256-CBC
       client
       dev tun
       dev-type tun
-      key /run/secrets/openvpn/work/key
+      key /run/secrets/job/key
 
       nobind
       port 1196
       proto udp
       push-peer-info
-      remote ${config.sops.placeholder."openvpn/work/gate"}
+      remote gate.${config.sops.placeholder."job/host"}
       remote-cert-tls server
       reneg-sec 604800
-      tls-crypt /run/secrets/openvpn/work/tls-crypt
+      tls-crypt /run/secrets/job/tls-crypt
 
       tls-version-min 1.2
       tun-mtu 1420
