@@ -52,8 +52,14 @@
     sniffnet
     baobab
     wl-clipboard
-    mpv
   ];
+
+  programs.mpv = {
+    enable = true;
+    package = pkgs.mpv.override {
+      youtubeSupport = false;
+    };
+  };
 
   xdg.autostart.enable = true;
   xdg.portal = {
