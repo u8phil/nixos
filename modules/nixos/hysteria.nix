@@ -147,21 +147,6 @@ in
     "hysteria"
   ];
 
-  nixpkgs.overlays = [
-    (final: prev: {
-      jetbrains = prev.jetbrains // {
-        rust-rover = prev.jetbrains.rust-rover.overrideAttrs (oldAttrs: {
-          src = oldAttrs.src.overrideAttrs (oldSrc: {
-            curlOptsList = (oldSrc.curlOptsList or [ ]) ++ [
-              "-x"
-              proxy
-            ];
-          });
-        });
-      };
-    })
-  ];
-
   environment.systemPackages = [
     pkgs.privoxy
 
