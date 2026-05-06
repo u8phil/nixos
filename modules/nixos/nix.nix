@@ -21,5 +21,11 @@
   nix.optimise.automatic = true;
   programs.nix-ld.enable = true;
 
+  systemd.services.nix-daemon.environment = {
+    http_proxy = "http://127.0.0.1:18081";
+    https_proxy = "http://127.0.0.1:18081";
+    no_proxy = "localhost,127.0.0.1";
+  };
+
   system.stateVersion = "25.11";
 }

@@ -39,6 +39,7 @@
     # mcp-nixos
     zellij
     gitui
+    pdfarranger
     gearlever
     appimage-run
     qbittorrent
