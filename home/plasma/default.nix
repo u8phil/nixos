@@ -16,10 +16,7 @@
     platformTheme.name = "kde";
     style = {
       name = "Darkly";
-      package = [
-        pkgs.darkly-qt5
-        pkgs.darkly
-      ];
+      package = [ pkgs.darkly ];
     };
   };
 
@@ -74,7 +71,7 @@
     };
 
     krunner.position = "center";
-    kwin.virtualDesktops.number = 4;
+    kwin.virtualDesktops.number = 5;
 
     configFile = {
       kdeglobals.General = {
@@ -100,7 +97,6 @@
       };
 
       kwinrc = {
-        Plugins.better_blur_dxEnabled = true;
         TabBox.DelayTime = 0;
         TabBox.LayoutName = "big_icons";
         TabBoxAlternative.LayoutName = "big_icons";

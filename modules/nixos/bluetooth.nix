@@ -2,7 +2,7 @@
 {
   hardware.bluetooth = {
     enable = true;
-    powerOnBoot = true;
+    powerOnBoot = false;
   };
 
   # stolen from here # https://www.reddit.com/r/NixOS/comments/1ch5d2p/comment/lkbabax/ and 

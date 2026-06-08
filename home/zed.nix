@@ -1,5 +1,10 @@
 { pkgs, ... }:
 {
+  xdg.mimeApps.defaultApplications = {
+    "text/markdown" = "dev.zed.Zed.desktop";
+    "text/x-markdown" = "dev.zed.Zed.desktop";
+  };
+
   programs.zed-editor = {
     enable = true;
 
@@ -7,6 +12,7 @@
       "nix"
       "rust"
       "slint"
+      "toml"
     ];
 
     userSettings = {
@@ -29,9 +35,15 @@
         "nixd"
         "!nil"
       ];
-      agent_servers.claude-acp = {
-        type = "registry";
-        env.CLAUDE_CODE_EXECUTABLE = "${pkgs.claude-code}/bin/claude";
+      agent_servers = {
+        claude-acp = {
+          type = "registry";
+          env.CLAUDE_CODE_EXECUTABLE = "${pkgs.claude-code}/bin/claude";
+        };
+        OpenCode = {
+          command = "opencode";
+          args = [ "acp" ];
+        };
       };
 
       load_direnv = "shell_hook";

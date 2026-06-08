@@ -1,11 +1,7 @@
 {
-  inputs,
   pkgs,
   ...
 }:
-let
-  betterBlurDxPackage = inputs.betterBlurDx.packages.${pkgs.stdenv.hostPlatform.system}.default;
-in
 {
   services.xserver = {
     enable = true;
@@ -23,10 +19,6 @@ in
   };
   programs.xwayland.enable = true;
 
-  environment.systemPackages = [
-    betterBlurDxPackage
-  ];
-
   environment.plasma6.excludePackages = with pkgs.kdePackages; [
     konsole
     kate
@@ -35,5 +27,6 @@ in
     discover
     baloo
     baloo-widgets
+    plasma-systemmonitor
   ];
 }

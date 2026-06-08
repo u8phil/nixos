@@ -10,8 +10,17 @@
   };
 
   # my laptop is shit
-  boot.blacklistedKernelModules = [ "amd_sfh" ];
-  boot.loader.timeout = 1;
+  # - amd_sfh: AMD Sensor Fusion Hub (broken on this laptop, hangs)
+  # - tpm, tpm_tis: TPM init adds ~3s to boot, unused (no LUKS-with-TPM, no attestation)
+  boot.blacklistedKernelModules = [
+    "amd_sfh"
+    "tpm"
+    "tpm_tis"
+  ];
+  # Disable legacy 8250 serial port probing (~3s boot delay × 4 ports).
+  # Does NOT affect USB serial (cdc_acm/cp210x/ch341) used for ESP32 etc.
+  boot.kernelParams = [ "8250.nr_uarts=0" ];
+  boot.loader.timeout = 0;
   # boot.kernel = pkgs.linuxPa
   # boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
   # nix.settings.substituters = [

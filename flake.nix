@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -15,11 +16,6 @@
       inputs.home-manager.follows = "home-manager";
     };
 
-    betterBlurDx = {
-      url = "github:xarblu/kwin-effects-better-blur-dx";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     rust-overlay = {
       url = "github:oxalica/rust-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,10 +26,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    #mcp-nixos = {
-    #  url = "github:utensils/mcp-nixos";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #};
+    mcp-nixos = {
+      url = "github:utensils/mcp-nixos";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nixos-grub-themes.url = "github:jeslie0/nixos-grub-themes";
 
@@ -46,8 +42,46 @@
     docs-mcp-server.url = "github:arabold/docs-mcp-server";
     docs-mcp-server.flake = false;
 
+    oh-my-openagent = {
+      url = "github:code-yeongyu/oh-my-openagent";
+      flake = false;
+    };
+
+    cocoindex-code = {
+      url = "github:cocoindex-io/cocoindex-code/65125c67ca6f66937cfc7def61217e29152128aa";
+      flake = false;
+    };
+
+    pyproject-nix = {
+      url = "github:pyproject-nix/pyproject.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    uv2nix = {
+      url = "github:pyproject-nix/uv2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.pyproject-nix.follows = "pyproject-nix";
+    };
+
+    pyproject-build-systems = {
+      url = "github:pyproject-nix/build-system-pkgs";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.pyproject-nix.follows = "pyproject-nix";
+      inputs.uv2nix.follows = "uv2nix";
+    };
+
+    serena = {
+      url = "github:oraios/serena/1931b601efcb0ae1a7c32e0382b3d4085fbaa4a4";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
+
+    wild = {
+      url = "github:wild-linker/wild";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -67,13 +101,27 @@
       system = "x86_64-linux";
       overlays = [
         rust-overlay.overlays.default
+        inputs.wild.overlays.default
+        (import ./overlays.nix { inherit inputs system; })
       ];
       pkgs = import nixpkgs {
         inherit system overlays;
       };
+      cocoindexCodePackage = pkgs.callPackage ./packages/ccc.nix {
+        inherit (inputs)
+          pyproject-build-systems
+          pyproject-nix
+          uv2nix
+          ;
+        cocoindex-code = inputs.cocoindex-code;
+        inherit pkgs;
+      };
     in
     {
-      packages.${system}.sops = pkgs.sops;
+      packages.${system} = {
+        sops = pkgs.sops;
+        ccc = cocoindexCodePackage;
+      };
 
       devShells.${system}.default = pkgs.mkShell {
         packages = [
@@ -95,7 +143,7 @@
             home-manager.useUserPackages = true;
             home-manager.backupFileExtension = "bak";
             home-manager.extraSpecialArgs = {
-              inherit inputs;
+              inherit inputs cocoindexCodePackage;
               claude-plugins = [ context-mode caveman ];
             };
 

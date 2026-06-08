@@ -9,11 +9,6 @@
         osc52 = "CopyPaste";
       };
 
-      window = {
-        blur = true;
-        opacity = 0.5;
-      };
-
       font = {
         size = 10.0;
         normal = {

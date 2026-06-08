@@ -1,5 +1,6 @@
 {
   pkgs,
+  lib,
   ...
 }:
 let
@@ -109,6 +110,9 @@ let
     {
       id = "proxytoggle@devpg.net";
       install_url = "file://${proxyTogglePatchedXpi}/proxy_toggle-hysteria.xpi";
+      # proxy.settings.set() throws unless the extension has private-browsing
+      # access, so the toggle is dead in incognito without this grant.
+      private_browsing = true;
     }
   ];
 
@@ -119,6 +123,9 @@ let
       install_url =
         extension.install_url
           or "https://addons.mozilla.org/firefox/downloads/latest/${extension.slug}/latest.xpi";
+    }
+    // lib.optionalAttrs (extension.private_browsing or false) {
+      private_browsing = true;
     };
   };
 

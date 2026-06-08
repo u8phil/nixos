@@ -2,6 +2,7 @@
 {
   imports = [
     ./ai
+    ./git.nix
     ./floorp.nix
     ./keepassxc.nix
     ./ssh.nix
@@ -13,7 +14,8 @@
     ./freecad.nix
     ./alacritty.nix
     ./zed.nix
-    ./matlab.nix
+    # Disable matlab, but it's good to know how to use it under nixos
+    # ./matlab.nix
   ];
 
   programs.direnv = {
@@ -36,7 +38,6 @@
     nixd
     devenv
     rust-bin.stable.latest.default
-    # mcp-nixos
     zellij
     gitui
     pdfarranger
@@ -51,9 +52,22 @@
     gparted
     hysteria
     sniffnet
+    # System monitor replacement for KDE's bundled Plasma System Monitor.
+    resources
     baobab
     wl-clipboard
+    libreoffice
+    wild-unwrapped
+    clang
   ];
+
+  # Wild linker as default for Rust builds via cargo.
+  # `clang` invokes `wild` via --ld-path. Both must be on PATH (above).
+  home.file.".cargo/config.toml".text = ''
+    [target.x86_64-unknown-linux-gnu]
+    linker = "clang"
+    rustflags = ["-Clink-arg=--ld-path=wild"]
+  '';
 
   programs.mpv = {
     enable = true;

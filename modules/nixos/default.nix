@@ -9,7 +9,6 @@
     ./power.nix
     ./locale.nix
     ./desktop.nix
-    ./docker.nix
     ./virtualisation.nix
     ./printing.nix
     ./audio.nix
