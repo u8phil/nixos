@@ -82,6 +82,13 @@
       url = "github:wild-linker/wild";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Private personal data (e.g. email addresses) kept out of this public repo.
+    # Separate private repo, checked out at ./private (gitignored).
+    private = {
+      url = "git+ssh://git@github.com/u8phil/private?ref=master";
+      flake = true;
+    };
   };
 
   outputs =
@@ -144,7 +151,7 @@
             home-manager.backupFileExtension = "bak";
             home-manager.extraSpecialArgs = {
               inherit inputs cocoindexCodePackage;
-              claude-plugins = [ context-mode caveman ];
+              claude-plugins = [ context-mode ];
             };
 
             home-manager.users.phil = import ./home/default.nix;

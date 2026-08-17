@@ -321,6 +321,22 @@
         "type": "github"
       }
     },
+    "private": {
+      "locked": {
+        "lastModified": 1781531831,
+        "narHash": "sha256-oA+Qnbyx9AgShOsg12ioGt0kAMHUE4PhZ5+gWz9Qa0M=",
+        "ref": "master",
+        "rev": "123329383161bae916d092afc3f8f24694191961",
+        "revCount": 1,
+        "type": "git",
+        "url": "ssh://git@github.com/u8phil/private"
+      },
+      "original": {
+        "ref": "master",
+        "type": "git",
+        "url": "ssh://git@github.com/u8phil/private"
+      }
+    },
     "pyproject-build-systems": {
       "inputs": {
         "nixpkgs": [
@@ -431,6 +447,7 @@
         "nixpkgs-master": "nixpkgs-master",
         "oh-my-openagent": "oh-my-openagent",
         "plasma-manager": "plasma-manager",
+        "private": "private",
         "pyproject-build-systems": "pyproject-build-systems",
         "pyproject-nix": "pyproject-nix",
         "rust-overlay": "rust-overlay",
