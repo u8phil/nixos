@@ -55,4 +55,22 @@
   programs.plasma.shortcuts."services/org.keepassxc.KeePassXC.desktop" = {
     _launch = [ "Meta+K" ];
   };
+
+  programs.plasma.window-rules = [
+    {
+      description = "Hide KeePassXC from screen captures";
+      match = {
+        window-class = {
+          value = "keepassxc";
+          type = "substring";
+          match-whole = false;
+        };
+        window-types = [ "normal" ];
+      };
+      apply.excludefromcapture = {
+        value = true;
+        apply = "force";
+      };
+    }
+  ];
 }

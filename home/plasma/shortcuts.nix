@@ -1,6 +1,28 @@
-{ ... }:
+{ pkgs, ... }:
+
+let
+  toggleIdleSleepInhibit = pkgs.writeShellScript "toggle-idle-sleep-inhibit" ''
+    unit="plasma-idle-sleep-inhibit.service"
+
+    if ${pkgs.systemd}/bin/systemctl --user is-active --quiet "$unit"; then
+      ${pkgs.systemd}/bin/systemctl --user stop "$unit"
+    else
+      ${pkgs.systemd}/bin/systemd-run --user --unit="$unit" --collect -- \
+        ${pkgs.systemd}/bin/systemd-inhibit \
+          --what=idle:sleep \
+          --who="Plasma shortcut" \
+          --why="Manual idle sleep inhibition" \
+          ${pkgs.coreutils}/bin/sleep infinity
+    fi
+  '';
+in
 
 {
+  programs.plasma.hotkeys.commands."toggle-idle-sleep-inhibit" = {
+    key = "Meta+Shift+B";
+    command = "${toggleIdleSleepInhibit}";
+  };
+
   programs.plasma.shortcuts = {
     plasmashell = {
       "activate application launcher" = "Alt+F1";

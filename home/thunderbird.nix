@@ -1,23 +1,26 @@
-{ config, inputs, ... }:
+{ config, inputs, lib, ... }:
 let
   # Addresses come from the private flake (u8phil/private), so they never appear
-  # in this public repo. flavor = "gmail.com" auto-fills imap.gmail.com:993 /
-  # smtp.gmail.com:465 + TLS, and the Thunderbird module auto-selects OAuth2
-  # (authMethod 10) and is_gmail=true because authentication is left unset.
+  # in this public repo. For accounts without custom IMAP data, flavor =
+  # "gmail.com" auto-fills imap.gmail.com:993 / smtp.gmail.com:465 + TLS, and
+  # the Thunderbird module auto-selects OAuth2 (authMethod 10) and is_gmail=true
+  # because authentication is left unset.
   #
   # The OAuth2 refresh token is still obtained interactively on first connect
   # (one Google sign-in per account) and stored encrypted in the profile -
   # same stateful constraint as rclone; it cannot be provisioned declaratively.
   mkAccount =
-    { address, primary }:
+    { address, primary, imap ? null, userName ? null }:
     {
       name = address;
       value = {
         inherit address primary;
         realName = "";
-        flavor = "gmail.com";
+        flavor = if imap == null then "gmail.com" else "plain";
         thunderbird.enable = true;
-      };
+      }
+      // lib.optionalAttrs (imap != null) { inherit imap; }
+      // lib.optionalAttrs (userName != null) { inherit userName; };
     };
 in
 {
@@ -37,6 +40,13 @@ in
       # View > Layout > Classic View, and View > Density > Compact.
       "mail.pane_config.dynamic" = 0;
       "mail.uidensity" = 0;
+
+      # Auto-update messages for all accounts: IMAP IDLE pushes new mail in
+      # real time, plus a 5-minute polling fallback and a check at startup.
+      "mail.server.default.use_idle" = true;
+      "mail.server.default.check_new_mail" = true;
+      "mail.server.default.check_time" = 5;
+      "mail.server.default.login_at_startup" = true;
 
       # New mail notifications through the desktop notification system.
       "mail.biff.show_alert" = true;
@@ -70,38 +80,4 @@ in
   accounts.email.accounts = builtins.listToAttrs (
     map mkAccount inputs.private.thunderbird.accounts
   );
-
-  xdg.configFile."autostart/thunderbird.desktop".text = ''
-    [Desktop Entry]
-    Type=Application
-    Name=Thunderbird
-    Comment=Start Thunderbird at login
-    Exec=${config.programs.thunderbird.finalPackage}/bin/thunderbird
-    Terminal=false
-    X-KDE-autostart-phase=2
-    X-KDE-autostart-after=panel
-  '';
-
-  programs.plasma.window-rules = [
-    {
-      description = "Start Thunderbird minimized";
-      match = {
-        window-class = {
-          value = "thunderbird";
-          type = "substring";
-          match-whole = false;
-        };
-        title = {
-          # Avoid minimizing compose windows such as "Write: ...".
-          value = "^(?!Write:).*Thunderbird.*$";
-          type = "regex";
-        };
-        window-types = [ "normal" ];
-      };
-      apply.minimize = {
-        value = true;
-        apply = "initially";
-      };
-    }
-  ];
 }

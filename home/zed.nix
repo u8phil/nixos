@@ -63,6 +63,13 @@
             };
           };
       };
+      lsp."rust-analyzer".binary = {
+        path = "${pkgs.devenv}/bin/devenv";
+        arguments = [
+          "shell"
+          "rust-analyzer"
+        ];
+      };
     };
 
     userKeymaps = [

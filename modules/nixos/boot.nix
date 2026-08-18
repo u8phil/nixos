@@ -8,6 +8,7 @@
     useOSProber = true;
     theme = inputs.nixos-grub-themes.packages.${pkgs.system}.nixos;
   };
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 
   # my laptop is shit
   # - amd_sfh: AMD Sensor Fusion Hub (broken on this laptop, hangs)
@@ -19,10 +20,12 @@
   ];
   # Disable legacy 8250 serial port probing (~3s boot delay × 4 ports).
   # Does NOT affect USB serial (cdc_acm/cp210x/ch341) used for ESP32 etc.
-  boot.kernelParams = [ "8250.nr_uarts=0" ];
+  boot.kernelParams = [
+    "8250.nr_uarts=0"
+    # Disable the broken firmware custom brightness curve that wraps 100% to minimum.
+    "amdgpu.dcdebugmask=0x40000"
+  ];
   boot.loader.timeout = 0;
-  # boot.kernel = pkgs.linuxPa
-  # boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
   # nix.settings.substituters = [
   #   "https://attic.xuyh0120.win/lantian"
   # ];

@@ -5,8 +5,11 @@
     package = pkgs.mpv.override {
       youtubeSupport = false;
     };
+    config = {
+      alang = "eng,en-US,en";
+    };
     bindings = {
-      "H" = "cycle audio";
+      "h" = "cycle audio";
       "Alt+9" = "add sub-scale -0.1";
       "Alt+0" = "add sub-scale +0.1";
     };

@@ -1,4 +1,16 @@
 { pkgs, ... }:
+let
+  nixWithProxy = pkgs.writeShellScriptBin "nix" ''
+    exec env \
+      http_proxy=http://127.0.0.1:18081 \
+      HTTP_PROXY=http://127.0.0.1:18081 \
+      https_proxy=http://127.0.0.1:18081 \
+      HTTPS_PROXY=http://127.0.0.1:18081 \
+      no_proxy=localhost,127.0.0.1 \
+      NO_PROXY=localhost,127.0.0.1 \
+      ${pkgs.nix}/bin/nix "$@"
+  '';
+in
 {
   imports = [
     ./ai
@@ -12,8 +24,10 @@
     ./vscodium.nix
     ./helix.nix
     ./freecad.nix
+    ./mpv.nix
     ./alacritty.nix
     ./zed.nix
+    ./thunderbird.nix
     # Disable matlab, but it's good to know how to use it under nixos
     # ./matlab.nix
   ];
@@ -24,6 +38,11 @@
     silent = true;
     nix-direnv.enable = true;
   };
+
+  home.file.".config/fish/conf.d/devenv.fish".text = ''
+    devenv hook fish | source
+  '';
+
   sops = {
     defaultSopsFile = ../secrets/work-vpn.yaml;
     defaultSopsFormat = "yaml";
@@ -34,18 +53,19 @@
   };
 
   home.packages = with pkgs; [
-    nodejs
+    (lib.hiPrio nixWithProxy)
     nixd
     devenv
     rust-bin.stable.latest.default
-    zellij
     gitui
     pdfarranger
-    gearlever
-    appimage-run
+    prismlauncher
     qbittorrent
     jetbrains.rust-rover
     telegram-desktop
+    (wrapOBS {
+      plugins = [ obs-studio-plugins.obs-pipewire-audio-capture ];
+    })
     nixfmt
     tokei
     pinta
@@ -56,25 +76,7 @@
     resources
     baobab
     wl-clipboard
-    libreoffice
-    wild-unwrapped
-    clang
   ];
-
-  # Wild linker as default for Rust builds via cargo.
-  # `clang` invokes `wild` via --ld-path. Both must be on PATH (above).
-  home.file.".cargo/config.toml".text = ''
-    [target.x86_64-unknown-linux-gnu]
-    linker = "clang"
-    rustflags = ["-Clink-arg=--ld-path=wild"]
-  '';
-
-  programs.mpv = {
-    enable = true;
-    package = pkgs.mpv.override {
-      youtubeSupport = false;
-    };
-  };
 
   xdg.autostart.enable = true;
   xdg.portal = {

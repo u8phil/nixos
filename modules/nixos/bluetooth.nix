@@ -5,17 +5,11 @@
     powerOnBoot = false;
   };
 
-  # stolen from here # https://www.reddit.com/r/NixOS/comments/1ch5d2p/comment/lkbabax/ and 
-  # https://github.com/GGG-KILLER/nixos-configs/blob/94a93b66cf8aea2639c52d21a0206834f152c11c/modules/xbox-controller.nix
   hardware.bluetooth.settings = {
     General = {
-      Enable = "Source,Sink,Media,Socket";
-      experimental = true; # show battery
+      Experimental = true; # show battery
 
-      MinConnectionInterval = 7;
-      MaxConnectionInterval = 9;
       ControllerMode = "dual";
-      ConnectionLatency = 0;
       Privacy = "device";
       JustWorksRepairing = "confirm";
       Class = "0x000100";

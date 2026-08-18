@@ -5,16 +5,15 @@
   ...
 }:
 let
-  proxy = "http://127.0.0.1:18081";
   mkConfig =
     params:
     lib.strings.toJSON (
       lib.recursiveUpdate params {
-        server = "${config.sops.placeholder.server}:443";
+        server = "${config.sops.placeholder.vpn}:443";
         auth = config.sops.placeholder."hysteria/password";
 
         tls = {
-          sni = config.sops.placeholder.server;
+          sni = config.sops.placeholder.vpn;
           insecure = false;
         };
 
@@ -145,6 +144,7 @@ in
 
   networking.firewall.trustedInterfaces = [
     "hysteria"
+    "virbr0"
   ];
 
   environment.systemPackages = [

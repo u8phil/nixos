@@ -17,6 +17,7 @@ let
 in
 {
   home.packages = [
-    freecad
+    # fails for now
+#    freecad
   ];
 }

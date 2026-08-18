@@ -108,6 +108,10 @@ let
       slug = "youtube-no-translation";
     }
     {
+      id = "{DEBA3021-9876-4702-89BA-42D095339A0A}";
+      slug = "disable-page-visibility";
+    }
+    {
       id = "proxytoggle@devpg.net";
       install_url = "file://${proxyTogglePatchedXpi}/proxy_toggle-hysteria.xpi";
       # proxy.settings.set() throws unless the extension has private-browsing
@@ -234,8 +238,12 @@ let
         font-size: 10px;
     }
 
-    a[title="Shorts"] {
-        display: none;
+    ytd-rich-section-renderer {
+        display: none !important;
+    }
+
+    #frosted-glass.with-chipbar.ytd-app {
+        height: 0px !important;
     }
 
     ytd-guide-section-renderer:nth-child(3),
@@ -281,6 +289,7 @@ in
           "floorp.workspaces.enabled" = false;
           "floorp.optimized.msbutton.ope" = true;
           "browser.tabs.firefox-view" = false;
+          "browser.tabs.splitView.enabled" = false;
           "browser.toolbars.bookmarks.visibility" = "never";
           "ui.key.menuAccessKey" = 0;
           "ui.key.menuAccessKeyFocuses" = false;

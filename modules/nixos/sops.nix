@@ -11,7 +11,13 @@
       "/var/lib/sops-nix/keys/sops-nix-ssh"
     ];
 
-    secrets.server = {
+    secrets.vpn = {
+      owner = "root";
+      group = "root";
+      mode = "0400";
+    };
+
+    secrets.prod = {
       owner = "root";
       group = "root";
       mode = "0400";
@@ -24,7 +30,11 @@
       content = ''
         Host riga
           User root
-          HostName ${config.sops.placeholder.server}
+          HostName ${config.sops.placeholder.vpn}
+
+        Host prod
+          User root
+          HostName ${config.sops.placeholder.prod}
       '';
     };
   };

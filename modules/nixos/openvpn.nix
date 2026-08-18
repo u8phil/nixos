@@ -125,8 +125,18 @@
         exit 0
       fi
 
+      # Prime sudo and clean up stale sessions before pulling the OTP, so the
+      # only delay between fetching the code and connecting is the DB unlock.
       sudo ${pkgs.openvpn3}/bin/openvpn3 session-manage --cleanup || true
-      exec sudo ${pkgs.openvpn3}/bin/openvpn3 session-start --config work
+
+      # Pull the TOTP from the already-running KeePassXC over its browser socket.
+      # --unlock 0 raises the unlock dialog and polls every second until the
+      # database is open and the code can be read.
+      otp=$(printf 'url=vpn://work\n' \
+        | ${pkgs.git-credential-keepassxc}/bin/git-credential-keepassxc --unlock 0 totp \
+        | ${pkgs.gnused}/bin/sed -n 's/^totp=//p')
+
+      printf '%s\n' "$otp" | sudo ${pkgs.openvpn3}/bin/openvpn3 session-start --config work
     '')
 
     (pkgs.writeShellScriptBin "vd" ''

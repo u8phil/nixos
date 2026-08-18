@@ -1,5 +1,6 @@
 {
   config,
+  lib,
   pkgs,
   ...
 }:
@@ -34,7 +35,7 @@
       widgetStyle = "Darkly";
       iconTheme = "breeze-dark";
       cursor.theme = "BreezeDark";
-      
+
       windowDecorations = {
         library = "org.kde.darkly";
         theme = "Darkly";
@@ -110,6 +111,8 @@
         };
       };
     };
+
+    dataFile.krunnerstaterc.PlasmaRunnerManager.loadAll = false;
   };
 
   home.packages = with pkgs; [
@@ -119,6 +122,23 @@
 
   xdg.configFile."systemd/user/plasma-baloorunner.service".source =
     config.lib.file.mkOutOfStoreSymlink "/dev/null";
+
+  home.activation.configureKRunnerPlugins = lib.hm.dag.entryAfter [ "configure-plasma" ] ''
+    ${pkgs.kdePackages.plasma-workspace}/bin/krunner --list | tail -n +3 | while IFS= read -r line; do
+      pluginId="''${line##*: }"
+      if [ -n "$pluginId" ]; then
+        pluginEnabled=false
+        if [ "$pluginId" = krunner_services ]; then
+          pluginEnabled=true
+        fi
+        $DRY_RUN_CMD ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
+          --file krunnerrc \
+          --group Plugins \
+          --key "''${pluginId}Enabled" \
+          "$pluginEnabled"
+      fi
+    done
+  '';
 
   systemd.user.services.krunner-daemon = {
     Unit = {
