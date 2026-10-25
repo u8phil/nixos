@@ -1,0 +1,122 @@
+{
+  "$schema": "https://unpkg.com/oh-my-opencode-slim@3.0.4/oh-my-opencode-slim.schema.json",
+  "autoUpdate": false,
+  "disabled_agents": [
+    "librarian",
+    "observer",
+    "council"
+  ],
+  "disabled_mcps": [
+    "context7",
+    "gh_grep"
+  ],
+  "disabled_tools": [
+    "ast_grep_search",
+    "ast_grep_replace",
+    "task_reply",
+    "marketplace_manage",
+    "marketplace_inspect",
+    "acp_run",
+    "interview_submit_state"
+  ],
+  "disabled_commands": [
+    "interview"
+  ],
+  "webfetch": {
+    "enabled": false
+  },
+  "companion": {
+    "enabled": false
+  },
+  "multiplexer": {
+    "type": "none"
+  },
+  "backgroundJobs": {
+    "concurrency": {
+      "defaultConcurrency": 2
+    },
+    "wallClockTimeoutMs": 1800000
+  },
+  "fallback": {
+    "enabled": false
+  },
+  "agents": {
+    "orchestrator": {
+      "model": "openai/gpt-6.1-sol",
+      "variant": "xhigh",
+      "skills": [
+        "debugging",
+        "typesafe-ai"
+      ],
+      "mcps": [
+        "github",
+        "nixos",
+        "websearch"
+      ]
+    },
+    "explorer": {
+      "model": "deepseek/deepseek-flash",
+      "variant": "high",
+      "skills": [
+        "debugging",
+        "typesafe-ai"
+      ],
+      "mcps": [
+        "github",
+        "nixos",
+        "websearch"
+      ]
+    },
+    "fixer": {
+      "model": "anthropic/claude-sonnet-5-5",
+      "variant": "medium",
+      "skills": [
+        "debugging",
+        "typesafe-ai"
+      ],
+      "mcps": [
+        "github",
+        "nixos",
+        "websearch"
+      ],
+      "permission": {
+        "task": {
+          "*": "deny",
+          "explorer": "allow"
+        }
+      }
+    },
+    "designer": {
+      "model": "anthropic/claude-sonnet-5-5",
+      "variant": "medium",
+      "skills": [
+        "debugging",
+        "typesafe-ai"
+      ],
+      "mcps": [
+        "github",
+        "nixos",
+        "websearch"
+      ],
+      "permission": {
+        "task": {
+          "*": "deny",
+          "explorer": "allow"
+        }
+      }
+    },
+    "oracle": {
+      "model": "anthropic/claude-sonnet-5-5",
+      "variant": "medium",
+      "skills": [
+        "debugging",
+        "typesafe-ai"
+      ],
+      "mcps": [
+        "github",
+        "nixos",
+        "websearch"
+      ]      
+    }
+  }
+}

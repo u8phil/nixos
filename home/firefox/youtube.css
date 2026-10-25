@@ -1,0 +1,51 @@
+.style-scope.ytd-rich-grid-renderer {
+    --ytd-rich-grid-items-per-row: 5;
+}
+
+ytd-rich-item-renderer[rendered-from-rich-grid][is-in-first-column] {
+    margin-left: calc(var(--ytd-rich-grid-item-margin)/2);
+}
+
+.yt-lockup-metadata-view-model--standard.yt-lockup-metadata-view-model--rich-grid-legacy-typography .yt-lockup-metadata-view-model__title {
+    font-size: 1.4rem;
+}
+
+#header.ytd-rich-grid-renderer {
+    display: none;
+}
+
+#voice-search-button.ytd-masthead {
+    display: none;
+}
+
+#country-code {
+    font-size: 0;
+}
+
+#country-code::before {
+    content: 'ZALUPA';
+    font-size: 10px;
+}
+
+ytd-rich-section-renderer {
+    display: none !important;
+}
+
+#frosted-glass.with-chipbar.ytd-app {
+    height: 0px !important;
+}
+
+ytd-guide-section-renderer:nth-child(3),
+ytd-guide-section-renderer:nth-child(4) {
+    display: none;
+}
+
+/* STUPID FUCKING "Includes paid promotion" button on video preview, DIE */
+a[href="https://support.google.com/youtube?p=ppp&nohelpkit=1"] {
+    display: none !important;
+}
+
+/* AI video summary */
+#expandable-metadata > ytd-expandable-metadata-renderer[has-video-summary=""] {
+    display: none;
+}

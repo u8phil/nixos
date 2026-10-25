@@ -2,7 +2,7 @@
 {
 
   programs.vesktop = {
-    package =
+    /*package =
       (pkgs.extend (
         _: prev: {
           vesktop = prev.vesktop.overrideAttrs (oldAttrs: {
@@ -30,8 +30,8 @@
                 ${" "}
                 -        if (isWayland) {
                 -            const video = data[0];
-                -            if (video) {
                 -                const stream = await sendRendererCommand<StreamPick>(IpcCommands.SCREEN_SHARE_PICKER, {
+                -            if (video) {
                 -                    screens: [video],
                 -                    skipPicker: true
                 -                }).catch(() => null);
@@ -61,7 +61,7 @@
               ) (oldAttrs.desktopItems or [ ]);
           });
         }
-      )).vesktop;
+      )).vesktop;*/
     enable = true;
     settings = {
       checkUpdates = false;
@@ -73,6 +73,8 @@
       staticTitle = true;
       hardwareAcceleration = true;
       discordBranch = "stable";
+      # Avoid non-default VPN/VM interface candidates that can leave voice at DTLS connecting.
+      webRTCIPHandlingPolicy = "default_public_and_private_interfaces";
     };
   };
 }

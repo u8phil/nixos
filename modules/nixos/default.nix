@@ -19,6 +19,7 @@
     ./openvpn.nix
     ./hysteria.nix
     ./steam.nix
+    ./xremap.nix
   ];
 
   # out-of-memory killer

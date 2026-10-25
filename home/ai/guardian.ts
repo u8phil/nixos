@@ -1,4 +1,5 @@
-import type { Plugin } from "@opencode-ai/plugin"
+import { Plugin } from "@opencode/plugin"
+import { Error as ToolError } from "@opencode/plugin/promise/tool"
 
 const PROTECTED_FILES = [
   "devenv.local.nix",
@@ -46,36 +47,28 @@ function isProtectedWorkPath(clean: string): boolean {
   return false
 }
 
-export const GuardianPlugin: Plugin = async () => {
-  return {
-    "tool.execute.before": async (input, output) => {
-      const tool = String(input?.tool ?? "").toLowerCase()
-      if (tool !== "bash") return
-      const args = output?.args
-      if (!args || typeof args !== "object") return
-
-      const command = (args as Record<string, unknown>).command
-      if (typeof command !== "string" || !command) return
-
-      const isRm = /\b(rm|rmdir|unlink)\b/.test(command)
-      if (!isRm) return
-
-      for (const file of PROTECTED_FILES) {
-        if (command.includes(file)) {
-          ;(args as Record<string, unknown>).command = `echo '${BLOCK_MESSAGE.replace(/'/g, "'\\''")}'`
-          return
-        }
-      }
-
-      const tokens = tokenizeCommand(command)
-      for (const token of tokens) {
-        if (isProtectedWorkPath(token)) {
-          ;(args as Record<string, unknown>).command = `echo '${BLOCK_MESSAGE.replace(/'/g, "'\\''")}'`
-          return
-        }
-      }
-    },
-  }
+function targetsProtectedPath(command: string): boolean {
+  if (!/\b(rm|rmdir|unlink)\b/.test(command)) return false
+  if (PROTECTED_FILES.some((file) => command.includes(file))) return true
+  return tokenizeCommand(command).some(isProtectedWorkPath)
 }
 
-export default GuardianPlugin
+export default Plugin.define({
+  id: "guardian",
+  async setup(ctx) {
+    // V2 names the command tool "shell"; "bash" is the V1 name.
+    await ctx.tool.hook("execute.before", (event) => {
+      const tool = String(event.tool ?? "").toLowerCase()
+      if (tool !== "shell" && tool !== "bash") return
+      const input = event.input
+      if (!input || typeof input !== "object") return
+
+      const command = (input as Record<string, unknown>).command
+      if (typeof command !== "string" || !command) return
+
+      // Rejecting (rather than rewriting to a successful echo) surfaces the
+      // reason to the model as a failed tool call.
+      if (targetsProtectedPath(command)) throw new ToolError({ message: BLOCK_MESSAGE })
+    })
+  },
+})

@@ -1,4 +1,9 @@
-{ inputs, pkgs, ... }:
+{
+  inputs,
+  lib,
+  pkgs,
+  ...
+}:
 {
 
   boot.loader.grub = {
@@ -9,6 +14,8 @@
     theme = inputs.nixos-grub-themes.packages.${pkgs.system}.nixos;
   };
   boot.kernelPackages = pkgs.linuxPackages_latest;
+  # Fallback boot entry on the default LTS kernel in case the latest kernel regresses.
+  specialisation.lts.configuration.boot.kernelPackages = lib.mkForce pkgs.linuxPackages;
 
   # my laptop is shit
   # - amd_sfh: AMD Sensor Fusion Hub (broken on this laptop, hangs)
@@ -25,7 +32,7 @@
     # Disable the broken firmware custom brightness curve that wraps 100% to minimum.
     "amdgpu.dcdebugmask=0x40000"
   ];
-  boot.loader.timeout = 0;
+  boot.loader.timeout = 1;
   # nix.settings.substituters = [
   #   "https://attic.xuyh0120.win/lantian"
   # ];

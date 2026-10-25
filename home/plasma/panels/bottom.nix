@@ -42,7 +42,7 @@
         "Containments/1505/Applets/1507/Configuration/General" = {
           forceStripes = false;
           iconSpacing = 0;
-          launchers = "applications:org.telegram.desktop.desktop,applications:org.kde.dolphin.desktop,applications:floorp.desktop";
+          launchers = "applications:org.telegram.desktop.desktop,applications:org.kde.dolphin.desktop,applications:librewolf.desktop";
         };
 
         "Containments/1505/Applets/1508" = {

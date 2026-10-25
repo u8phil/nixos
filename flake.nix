@@ -33,6 +33,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    gitlab-mcp = {
+      url = "github:zereight/gitlab-mcp/v2.1.49";
+      flake = false;
+    };
+
     nixos-grub-themes.url = "github:jeslie0/nixos-grub-themes";
 
     oh-my-openagent = {
@@ -40,21 +45,23 @@
       flake = false;
     };
 
-    opencode-fusion = {
-      url = "github:mihneaptu/opencode-fusion";
+    typesafe-skills = {
+      url = "github:typesafe-ai/skills";
       flake = false;
     };
 
+    ast-grep-skills = {
+      url = "github:ast-grep/agent-skill";
+      flake = false;
+    };
+
+    xremap-flake = {
+      url = "github:xremap/nix-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     nix-index-database.url = "github:nix-community/nix-index-database";
     nix-index-database.inputs.nixpkgs.follows = "nixpkgs";
-
-    # Private personal data (e.g. email addresses) kept out of this public repo.
-    # This is a separate private Git repo checked out at ./private as a Git submodule.
-    private = {
-      url = ./private;
-      flake = true;
-    };
   };
 
   outputs =
@@ -96,6 +103,7 @@
           sops-nix.nixosModules.sops
           home-manager.nixosModules.home-manager
           nix-index-database.nixosModules.default
+          inputs.xremap-flake.nixosModules.default
           {
             nixpkgs.overlays = overlays;
             home-manager.useGlobalPkgs = true;

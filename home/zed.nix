@@ -7,12 +7,14 @@
 
   programs.zed-editor = {
     enable = true;
+    mutableUserSettings = false;
 
     extensions = [
       "nix"
       "rust"
       "slint"
       "toml"
+      "jetbrains-themes"
     ];
 
     userSettings = {
@@ -31,44 +33,52 @@
 
       autosave.after_delay.milliseconds = 0;
 
-      languages.Nix.language_servers = [
-        "nixd"
-        "!nil"
-      ];
-      agent_servers = {
-        claude-acp = {
-          type = "registry";
-          env.CLAUDE_CODE_EXECUTABLE = "${pkgs.claude-code}/bin/claude";
-        };
-        OpenCode = {
-          command = "opencode";
-          args = [ "acp" ];
-        };
+      # All Zed AI is off (agent panel, threads sidebar, predictions, inline
+      # assistant).
+      disable_ai = true;
+
+      # Panel layout: project, git and collaboration panels on the left,
+      # outline on the right. The agent docks below only apply if AI is ever
+      # turned back on.
+      project_panel.dock = "left";
+      outline_panel.dock = "right";
+      git_panel.dock = "left";
+      collaboration_panel.dock = "left";
+      agent = {
+        dock = "right";
+        threads_sidebar.position = "right";
       };
 
+      theme = "JetBrains Islands Dark";
+
+      # Deny language servers by default; opt in per language below.
+      enable_language_server = false;
+      languages = {
+        Rust = {
+          enable_language_server = true;
+          language_servers = [ "rust-analyzer" ];
+        };
+        Nix = {
+          enable_language_server = true;
+          language_servers = [ "nixd" ];
+        };
+        Slint = {
+          enable_language_server = true;
+          language_servers = [ "slint" ];
+        };
+        Python = {
+          enable_language_server = true;
+          language_servers = [ "ruff" ];
+        };
+      };
       load_direnv = "shell_hook";
 
-      lsp.nixd = {
-        settings.nixd =
-          let
-            flakePath = "/home/phil/nixos";
-          in
-          {
-            formatting.command = [ "nixfmt" ];
-            nixpkgs.expr = "import (builtins.getFlake \"${flakePath}\").inputs.nixpkgs { }";
-            options = {
-              nixos.expr = "(builtins.getFlake \"${flakePath}\").nixosConfigurations.nixos.options";
-              "home-manager".expr =
-                "(builtins.getFlake \"${flakePath}\").nixosConfigurations.nixos.options.home-manager.users.type.getSubOptions []";
-            };
-          };
-      };
-      lsp."rust-analyzer".binary = {
-        path = "${pkgs.devenv}/bin/devenv";
-        arguments = [
-          "shell"
-          "rust-analyzer"
-        ];
+      # Target initialization changes may require `editor: restart language
+      # server`. Selecting a profile changes analysis, not Cargo build commands.
+      profiles = {
+        "Rust Linux x64".settings.lsp."rust-analyzer".initialization_options.cargo.target = "x86_64-unknown-linux-gnu";
+        "Rust macOS x64".settings.lsp."rust-analyzer".initialization_options.cargo.target = "x86_64-apple-darwin";
+        "Rust Windows x64".settings.lsp."rust-analyzer".initialization_options.cargo.target = "x86_64-pc-windows-gnu";
       };
     };
 
@@ -76,6 +86,7 @@
       {
         bindings = {
           "ctrl-q" = null;
+          "ctrl-alt-t" = "settings_profile_selector::Toggle";
         };
       }
       {

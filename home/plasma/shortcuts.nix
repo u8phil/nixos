@@ -39,7 +39,7 @@ in
       "Switch to Desktop 5" = "Alt+5";
     };
 
-    "services/floorp.desktop" = {
+    "services/librewolf.desktop" = {
       _launch = [ "Meta+F" ];
     };
 

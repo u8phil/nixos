@@ -1,0 +1,11 @@
+#nav-bar-overflow-button,
+#back-button,
+#forward-button,
+#reload-button,
+#stop-button,
+#stop-reload-button,
+#sidebar-box,
+#sidebar-splitter,
+#sidebar-button {
+  display: none !important;
+}

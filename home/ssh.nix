@@ -12,7 +12,7 @@
     includes = [ osConfig.sops.templates.ssh-host-config.path ];
     matchBlocks."*" = {
       addKeysToAgent = "yes";
-      forwardAgent = true;
+      forwardAgent = false;
     };
   };
 }

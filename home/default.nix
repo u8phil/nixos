@@ -15,7 +15,7 @@ in
   imports = [
     ./ai
     ./git.nix
-    ./floorp.nix
+    ./firefox
     ./keepassxc.nix
     ./ssh.nix
     ./plasma
@@ -27,7 +27,7 @@ in
     ./mpv.nix
     ./alacritty.nix
     ./zed.nix
-    ./thunderbird.nix
+    ./rust.nix
     # Disable matlab, but it's good to know how to use it under nixos
     # ./matlab.nix
   ];
@@ -55,8 +55,10 @@ in
   home.packages = with pkgs; [
     (lib.hiPrio nixWithProxy)
     nixd
+    # devenv 2.4.0: sensitive installs pass `-o PermitLocalCommand=no` via
+    # NIX_SSHOPTS, defeating Nix's `LocalCommand=echo started` handshake so
+    # `nix copy` hangs. Drop once devenv > 2.4.0 fixes it.
     devenv
-    rust-bin.stable.latest.default
     gitui
     pdfarranger
     prismlauncher
