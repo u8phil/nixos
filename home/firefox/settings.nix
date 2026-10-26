@@ -22,7 +22,6 @@
 
     "browser.search.suggest.enabled.private" = false;
     "browser.privatebrowsing.forceMediaMemoryCache" = true;
-    "browser.sessionstore.privacy_level" = 1;
     "privacy.resistFingerprinting" = false;
     "network.http.referer.XOriginTrimmingPolicy" = 2;
     "security.csp.reporting.enabled" = false;
