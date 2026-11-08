@@ -1,50 +1,8 @@
 {
   config,
-  lib,
   pkgs,
   ...
 }:
-let
-  mkConfig =
-    params:
-    lib.strings.toJSON (
-      lib.recursiveUpdate params {
-        server = "${config.sops.placeholder.vpn}:443";
-        auth = config.sops.placeholder."hysteria/password";
-
-        tls = {
-          sni = config.sops.placeholder.vpn;
-          insecure = false;
-        };
-
-        fastOpen = false;
-
-        log = {
-          level = "warn";
-          timestamp = true;
-        };
-      }
-    );
-
-  opencodePrivoxyConfig = pkgs.writeText "opencode-privoxy.conf" ''
-    confdir ${pkgs.privoxy}/etc
-    logdir /run/opencode-privoxy
-
-    actionsfile match-all.action
-    actionsfile default.action
-    actionsfile user.action
-    filterfile default.filter
-
-    listen-address 127.0.0.1:18081
-    toggle 1
-    enable-remote-toggle 0
-    enable-edit-actions 0
-
-    forward-socks5t / 127.0.0.1:1080 .
-
-    logfile logfile
-  '';
-in
 {
   sops.secrets = {
     "hysteria/password" = {
@@ -52,59 +10,53 @@ in
       group = "root";
       mode = "0400";
     };
-
-    "hysteria/server_ip" = {
+    "vpn" = {
       owner = "root";
       group = "root";
       mode = "0400";
     };
   };
 
+  # SOCKS5 on :1080 (Cinny, Vesktop, browser) and HTTP on :18081 for
+  # HTTP(S)_PROXY users (opencode, nix-daemon, nix CLI wrapper).
+  #
+  # The HTTP side used to be Privoxy bridging SOCKS->HTTP, because Hysteria's
+  # own HTTP proxy cut plain HTTP transfers off after 10s (Hysteria <= 2.12.2;
+  # fixed in 2.12.3, apernet/hysteria 75aa2f3) and uploaded large bodies ~10x
+  # slower on 2.7.0. Re-tested side by side on 2.13.0: identical to Privoxy.
+  # Kept on separate ports rather than one shared listener (2.9.3 had a data
+  # race in the shared-port HTTP/SOCKS5 multiplexer).
   sops.templates.hysteria = {
     name = "hysteria.yaml";
     owner = "root";
     group = "root";
     mode = "0400";
+    # Config edits don't change ExecStart, so restart explicitly.
+    restartUnits = [ "hysteria.service" ];
 
-    content = mkConfig {
-      tun = {
-        name = "hysteria";
-        mtu = 1400;
-        address = {
-          ipv4 = "172.18.0.1/30";
-          ipv6 = "2001::ffff:ffff:ffff:fff1/126";
-        };
-        route = {
-          ipv4 = [ "0.0.0.0/0" ];
-          ipv6 = [ "2000::/3" ];
-          ipv4Exclude = [
-            "192.168.0.0/16"
-            "127.0.0.0/24"
-            "${config.sops.placeholder."hysteria/server_ip"}/32"
-          ];
-          ipv6Exclude = [ "2a0b:88c0:48::d/128" ];
-        };
-      };
-    };
-  };
-
-  sops.templates.hysteria-socks = {
-    name = "hysteria-socks.yaml";
-    owner = "root";
-    group = "root";
-    mode = "0400";
-
-    content = mkConfig {
-      socks5 = {
-        listen = "127.0.0.1:1080";
-      };
-    };
+    content = ''
+      server: "${config.sops.placeholder.vpn}:443"
+      auth: |-
+        ${config.sops.placeholder."hysteria/password"}
+      socks5:
+        listen: "127.0.0.1:1080"
+      http:
+        listen: "127.0.0.1:18081"
+      tls:
+        sni: "${config.sops.placeholder.vpn}"
+        insecure: false
+      fastOpen: false
+      log:
+        level: "warn"
+        timestamp: true
+    '';
   };
 
   systemd.services = with config.sops.templates; {
     hysteria = {
-      description = "Hysteria";
+      description = "Hysteria SOCKS5 + HTTP proxy";
       after = [ "network.target" ];
+      wantedBy = [ "multi-user.target" ];
 
       serviceConfig = {
         ExecStart = "${pkgs.hysteria}/bin/hysteria -c ${hysteria.path} client";
@@ -112,52 +64,5 @@ in
         RestartSec = 2;
       };
     };
-
-    hysteria-socks = {
-      description = "Hysteria SOCKS5";
-      after = [ "network.target" ];
-      wantedBy = [ "multi-user.target" ];
-
-      serviceConfig = {
-        ExecStart = "${pkgs.hysteria}/bin/hysteria -c ${hysteria-socks.path} client";
-        Restart = "on-failure";
-        RestartSec = 2;
-      };
-    };
-
-    opencode-socks-http = {
-      description = "OpenCode SOCKS to HTTP bridge";
-      after = [
-        "hysteria-socks.service"
-      ];
-      wants = [ "hysteria-socks.service" ];
-      wantedBy = [ "multi-user.target" ];
-
-      serviceConfig = {
-        RuntimeDirectory = "opencode-privoxy";
-        ExecStart = "${pkgs.privoxy}/bin/privoxy --no-daemon ${opencodePrivoxyConfig}";
-        Restart = "on-failure";
-        RestartSec = 2;
-      };
-    };
   };
-
-  networking.firewall.trustedInterfaces = [
-    "hysteria"
-    "virbr0"
-  ];
-
-  environment.systemPackages = [
-    pkgs.privoxy
-
-    (pkgs.writeShellScriptBin "sc" ''
-      set -euo pipefail
-      exec sudo ${pkgs.systemd}/bin/systemctl start hysteria.service
-    '')
-
-    (pkgs.writeShellScriptBin "sd" ''
-      set -euo pipefail
-      exec sudo ${pkgs.systemd}/bin/systemctl stop hysteria.service
-    '')
-  ];
 }

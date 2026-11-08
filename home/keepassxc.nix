@@ -48,6 +48,7 @@
         IconDownloadFallback = true;
         LockDatabaseIdle = true;
         LockDatabaseIdleSeconds = 600;
+        QuickUnlock = false;
       };
     };
   };

@@ -4,7 +4,7 @@
   # and then creates a file with the defined priveleges, so if you point to a file ~/example/foo.conf, the example
   # folder will be created with root privilges and foo.conf will be created with owner/group/mode ownage
   sops = {
-    defaultSopsFile = ../../secrets/work-vpn.yaml;
+    defaultSopsFile = ../../secrets.yaml;
     defaultSopsFormat = "yaml";
 
     age.sshKeyPaths = [

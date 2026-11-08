@@ -1,7 +1,11 @@
 keys:
   - &machine_sops age154jsw6pnyamka6g3wnhemtghuq20zmk6hql97p9xytjyzcyr449qq372h5
+  # Editing key: private half in KeePassXC (devops://nixos), used via devenv.
+  # Listed as an SSH recipient so SOPS_AGE_SSH_PRIVATE_KEY_CMD can decrypt.
+  - &master ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOa3BHATgqYDftEcvvm4D/vCLUTmFyiRcdCW0+agbMT3
 
 creation_rules:
-  - path_regex: secrets/.*\.ya?ml$
+  - path_regex: ^secrets\.yaml$
     age:
       - *machine_sops
+      - *master

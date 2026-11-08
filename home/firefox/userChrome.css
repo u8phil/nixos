@@ -9,3 +9,10 @@
 #sidebar-button {
   display: none !important;
 }
+
+/* Letterboxing only in private windows: undo its size clamp elsewhere.
+   Mirrors the selector in chrome://global/content/resistfingerprinting/letterboxing.css */
+:root:not([privatebrowsingmode]) .letterboxing .browserContainer:not(.responsive-mode) > .browserStack:not(.exclude-letterboxing) > browser {
+  width: unset !important;
+  height: unset !important;
+}

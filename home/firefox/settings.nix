@@ -22,8 +22,19 @@
 
     "browser.search.suggest.enabled.private" = false;
     "browser.privatebrowsing.forceMediaMemoryCache" = true;
-    "privacy.resistFingerprinting" = false;
+    "privacy.resistFingerprinting" = true;
+    # Round the page area to standard sizes; maximized windows otherwise
+    # expose the exact 1920x1007 viewport (screen minus panel and chrome).
+    # userChrome.css undoes it outside private windows.
+    "privacy.resistFingerprinting.letterboxing" = true;
     "network.http.referer.XOriginTrimmingPolicy" = 2;
+    # Keep WebRTC inside the Hysteria proxy so it can't leak the real IP.
+    # LibreWolf default; pinned because the profile had it overridden.
+    "media.peerconnection.ice.proxy_only_if_behind_proxy" = true;
+    # DRM off, as in stock LibreWolf; pinned over earlier profile overrides.
+    "media.eme.enabled" = false;
+    "media.gmp-widevinecdm.enabled" = false;
+    "media.gmp-manager.updateEnabled" = false;
     "security.csp.reporting.enabled" = false;
 
     # Explicit History settings: browsing/downloads only, no cleanup on exit.

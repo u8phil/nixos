@@ -10,9 +10,9 @@
     enable = true;
     enableDefaultConfig = false;
     includes = [ osConfig.sops.templates.ssh-host-config.path ];
-    matchBlocks."*" = {
-      addKeysToAgent = "yes";
-      forwardAgent = false;
+    settings."*" = {
+      AddKeysToAgent = "yes";
+      ForwardAgent = true;
     };
   };
 }

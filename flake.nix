@@ -5,7 +5,6 @@
     self.submodules = true;
 
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
     home-manager = {
       url = "github:nix-community/home-manager/master";
@@ -78,7 +77,6 @@
       system = "x86_64-linux";
       overlays = [
         rust-overlay.overlays.default
-        (import ./overlays.nix { inherit inputs system; })
       ];
       pkgs = import nixpkgs {
         inherit system overlays;

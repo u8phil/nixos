@@ -56,7 +56,7 @@ in
 
     SearchSuggestEnabled = false;
 
-    "3rdparty".Extensions.${addons.extensions.adnauseam.id} = {
+    "3rdparty".Extensions.${addons.extensions.ublock.id} = {
       userSettings = [
         [
           "advancedUserEnabled"

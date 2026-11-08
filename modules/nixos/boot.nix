@@ -11,7 +11,7 @@
     efiSupport = true;
     device = "nodev";
     useOSProber = true;
-    theme = inputs.nixos-grub-themes.packages.${pkgs.system}.nixos;
+    theme = inputs.nixos-grub-themes.packages.${pkgs.stdenv.hostPlatform.system}.nixos;
   };
   boot.kernelPackages = pkgs.linuxPackages_latest;
   # Fallback boot entry on the default LTS kernel in case the latest kernel regresses.
@@ -39,8 +39,6 @@
   # nix.settings.trusted-public-keys = [
   #   "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
   # ];
-
-  boot.initrd.systemd.enable = true;
 
   system.nixos-init.enable = true;
   services.userborn.enable = true;

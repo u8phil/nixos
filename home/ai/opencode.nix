@@ -5,7 +5,7 @@
   ...
 }:
 let
-  # Same local-proxy wrapping as claude-code: nix-daemon/ISP blocks direct
+  # Local-proxy wrapping: nix-daemon/ISP blocks direct
   # egress, so route opencode (bun-runtime → respects HTTP(S)_PROXY) and its
   # spawned children through the local proxy. --set-default lets a real env
   # var still override.
@@ -102,10 +102,20 @@ in
       run. If broader verification seems needed, they say so in the report
       instead of running it.
 
-      Minimize launching things in background. It's great to streamline commands,
-      but when the blocking step of work is launched 
+      ## Discuss, then act
+      When the user is exploring an idea, asking how something works, or weighing
+      options, answer and stop; don't edit. Once they've decided ("do it", or an
+      explicit instruction), act without asking again, including the follow-ups
+      that decision obviously implies. If it's genuinely unclear which phase
+      you're in, end with a one-line offer ("want me to apply this?") instead of
+      editing.
+
+      ## Experiments
+      Throwaway tests stay in /tmp and are removed when you're done.
+      Ask first before anything that persists: installs, nix store fetches,
+      services, files outside /tmp.
     '';
-    tui.theme ="one-dark";
+    cli.theme.name = "one-dark";
     skills.debugging = "${ohMyOpenagent}/packages/shared-skills/skills/debugging";
     skills."typesafe-ai" = "${inputs.typesafe-skills}/skills/typesafe-ai";
     skills.ast-grep = "${inputs.ast-grep-skills}/ast-grep/skills/ast-grep";
@@ -124,7 +134,6 @@ in
         plan.variant = "xhigh";
       };
       plugins = [
-        "@mohak34/opencode-notifier@latest"
         "@ex-machina/opencode-anthropic-auth@next"
         "./plugins/guardian"
         "./plugins/ignore-root-agents"
@@ -199,7 +208,16 @@ in
 
   # V2 plugins must be directories. The host supplies `@opencode/plugin` at
   # runtime (the installed OpenCode's own version), so no package.json needed.
-  xdg.configFile."opencode/plugins/guardian/index.ts".source = ./guardian.ts;
-  xdg.configFile."opencode/plugins/ignore-root-agents/index.ts".source = ./ignore-root-agents.ts;
+  # OpenCode rejects entrypoints resolving outside the plugin directory.
+  xdg.configFile."opencode/plugins/guardian".source =
+    pkgs.writeTextDir "index.ts" (builtins.readFile ./guardian.ts);
+  xdg.configFile."opencode/plugins/ignore-root-agents".source =
+    pkgs.writeTextDir "index.ts" (builtins.readFile ./ignore-root-agents.ts);
   xdg.configFile."opencode/oh-my-opencode-slim.json".source = ./oh-my-opencode-slim.json;
+
+  # OpenCode 2 migrates/rewrites cli.json itself (e.g. from the old tui.json),
+  # leaving a regular file where HM wants its symlink. Settings are immutable
+  # (mutableSettings = false), so HM's copy always wins instead of a .bak
+  # that would block the next activation.
+  xdg.configFile."opencode/cli.json".force = true;
 }

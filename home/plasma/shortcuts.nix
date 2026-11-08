@@ -43,6 +43,10 @@ in
       _launch = [ "Meta+F" ];
     };
 
+    "services/librewolf-direct.desktop" = {
+      _launch = [ "Meta+Shift+F" ];
+    };
+
     "services/Alacritty.desktop" = {
       _launch = [
         "Meta+C"

@@ -42,8 +42,8 @@
   },
   "agents": {
     "orchestrator": {
-      "model": "openai/gpt-6.1-sol",
-      "variant": "xhigh",
+      "model": "anthropic/claude-opus-5-5",
+      "variant": "medium",
       "skills": [
         "debugging",
         "typesafe-ai"
@@ -55,7 +55,7 @@
       ]
     },
     "explorer": {
-      "model": "deepseek/deepseek-flash",
+      "model": "opencode-go/deepseek-v4.1-flash",
       "variant": "high",
       "skills": [
         "debugging",
@@ -68,8 +68,8 @@
       ]
     },
     "fixer": {
-      "model": "anthropic/claude-sonnet-5-5",
-      "variant": "medium",
+      "model": "opencode-go/deepseek-v4.1-flash",
+      "variant": "max",
       "skills": [
         "debugging",
         "typesafe-ai"
@@ -87,8 +87,8 @@
       }
     },
     "designer": {
-      "model": "anthropic/claude-sonnet-5-5",
-      "variant": "medium",
+      "model": "opencode-go/deepseek-v4.1-flash",
+      "variant": "max",
       "skills": [
         "debugging",
         "typesafe-ai"
@@ -106,8 +106,8 @@
       }
     },
     "oracle": {
-      "model": "anthropic/claude-sonnet-5-5",
-      "variant": "medium",
+      "model": "opencode-go/kimi-k3.1-pro",
+      "variant": "max",
       "skills": [
         "debugging",
         "typesafe-ai"
@@ -116,7 +116,7 @@
         "github",
         "nixos",
         "websearch"
-      ]      
+      ]
     }
   }
 }

@@ -21,6 +21,7 @@ in
     ./plasma
     ./rclone.nix
     ./discord.nix
+    ./cinny.nix
     ./vscodium.nix
     ./helix.nix
     ./freecad.nix
@@ -44,7 +45,7 @@ in
   '';
 
   sops = {
-    defaultSopsFile = ../secrets/work-vpn.yaml;
+    defaultSopsFile = ../secrets.yaml;
     defaultSopsFormat = "yaml";
 
     age.sshKeyPaths = [
@@ -63,11 +64,7 @@ in
     pdfarranger
     prismlauncher
     qbittorrent
-    jetbrains.rust-rover
     telegram-desktop
-    (wrapOBS {
-      plugins = [ obs-studio-plugins.obs-pipewire-audio-capture ];
-    })
     nixfmt
     tokei
     pinta
@@ -83,7 +80,7 @@ in
   xdg.autostart.enable = true;
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
+    extraPortals = [ pkgs.kdePackages.xdg-desktop-portal-kde pkgs.xdg-desktop-portal-hyprland ];
     configPackages = [ pkgs.kdePackages.xdg-desktop-portal-kde ];
   };
 

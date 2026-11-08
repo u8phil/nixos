@@ -30,5 +30,15 @@
       sops
       file
       (lib.hiPrio pkgs.uutils-coreutils-noprefix)
+
+      # Native build baseline for Rust build scripts and -sys crates
+      gcc
+      (lib.lowPrio clang)
+      gnumake
+      pkg-config
+      cmake
+      ninja
+      python3
+      wild
     ]);
 }

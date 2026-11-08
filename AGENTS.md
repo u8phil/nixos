@@ -22,7 +22,7 @@ Home Manager is integrated through the NixOS flake, not managed as a separate st
 - `home/`: Home Manager modules for user applications, terminal tools, AI tooling, and Plasma setup
 - `home/ai/`: Home Manager modules for AI tooling such as Claude Code, OpenCode, and GitHub MCP
 - `home/plasma/`: Plasma Manager configuration, including panels and desktop behavior
-- `secrets/`: SOPS-managed secret material
+- `secrets.yaml`: SOPS-encrypted secrets (recipients in `.sops.yaml`)
 
 ## Change Guidelines
 
@@ -40,6 +40,12 @@ Home Manager is integrated through the NixOS flake, not managed as a separate st
 - Use `nh os switch .#nixos` only when explicitly asked to apply the changes.
 - Run `nh` validation commands quietly; avoid flooding the chat with live build output unless an error needs to be reported.
 - For quick syntax checks, `nix-instantiate --parse <file>` is fine, but the preferred end-to-end validation path is still the `nh os build -n` workflow.
+
+## Secrets
+
+- Secret values never reach your output: decrypted sops data, `/run/secrets/*`, `/var/lib/sops-nix/keys/*`, tokens, env dumps, logs of services that hold secrets.
+- Prove things without showing them: exit codes, lengths, fingerprints, public halves.
+  `sops -d secrets.yaml >/dev/null && echo ok` · `ssh-keygen -y -f key` not `cat key` · `env | cut -d= -f1`
 
 ## Notes For Agents
 
